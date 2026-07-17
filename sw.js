@@ -1,12 +1,13 @@
 /* 経営者への道 - Service Worker (cache-first) */
-const CACHE = 'ceo-quest-v1';
+const CACHE = 'ceo-quest-v2';
 const ASSETS = [
   './',
   './index.html',
   './manifest.json',
   './data/cards.js',
   './data/drills.js',
-  './data/challenges.js'
+  './data/challenges.js',
+  './data/career.js'
 ];
 
 self.addEventListener('install', (e) => {

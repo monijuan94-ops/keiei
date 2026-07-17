@@ -264,6 +264,89 @@ textarea.field:focus,input:focus{outline:none;border-color:var(--navy2);}
 .evalpick{display:flex;gap:8px;margin-top:10px;}
 .evalpick button{flex:1;border:1.5px solid var(--line);border-radius:11px;padding:12px 0;font-weight:800;background:#fff;color:var(--navy);}
 .evalpick button.on{background:var(--gold);border-color:var(--gold);color:var(--navy);}
+
+/* ===== countdown timer ===== */
+.timer-wrap{position:sticky;top:56px;z-index:10;background:var(--bg);padding:8px 0 6px;margin-bottom:8px;}
+.timer-num{font-size:22px;font-weight:900;color:var(--navy);text-align:center;letter-spacing:.04em;font-variant-numeric:tabular-nums;}
+.bar.timer-bar{height:12px;margin-top:6px;}
+.bar.timer-bar>span{background:linear-gradient(90deg,var(--ok),#2fd08c);transition:width .5s linear,background .3s;}
+
+/* ===== career badge (選考対策 / 業界マスター) ===== */
+.cbadge{display:inline-block;font-size:11px;font-weight:800;padding:2px 8px;border-radius:999px;
+  background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy);margin-left:6px;vertical-align:middle;}
+.ind-chips{display:flex;gap:7px;overflow-x:auto;padding:2px 0 10px;-webkit-overflow-scrolling:touch;}
+.ind-chips::-webkit-scrollbar{display:none;}
+.ind-chip{flex:none;border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:6px 12px;
+  font-size:12px;font-weight:700;color:var(--navy);white-space:nowrap;}
+.ind-chip.on{background:var(--navy);color:#fff;border-color:var(--navy);}
+.ind-chip.mastered{border-color:var(--gold);}
+.ind-chip.mastered.on{background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy);border-color:var(--gold);}
+.badge-wall{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;}
+.ibadge{display:flex;flex-direction:column;align-items:center;gap:2px;width:56px;}
+.ibadge .ic{font-size:26px;filter:grayscale(1);opacity:.35;}
+.ibadge.on .ic{filter:none;opacity:1;}
+.ibadge .nm{font-size:10px;color:var(--sub);font-weight:700;text-align:center;}
+.ibadge.on .nm{color:var(--navy);}
+.fu-q{background:var(--navy2);color:#fff;border-radius:12px;padding:12px 14px;font-size:14px;font-weight:700;margin-bottom:8px;line-height:1.5;}
+
+/* ===== gacha: recruitment room ===== */
+.modal.wide{max-width:420px;}
+.gacha-room .muted{margin:0 0 10px;}
+.pity-bar{background:linear-gradient(135deg,var(--navy),var(--navy2));color:var(--gold2);
+  font-weight:800;font-size:12px;padding:8px 12px;border-radius:10px;margin-bottom:12px;
+  border:1px solid rgba(212,175,55,.4);}
+.gacha-opt{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:#fff;
+  border:1.5px solid var(--line);border-radius:14px;padding:11px 12px;margin-bottom:10px;box-shadow:var(--shadow);
+  transition:transform .08s ease;}
+.gacha-opt:active{transform:scale(.98);}
+.gacha-opt:disabled{opacity:.42;box-shadow:none;}
+.gacha-opt .go-ic{font-size:26px;flex:none;width:34px;text-align:center;}
+.gacha-opt .go-body{flex:1;min-width:0;display:flex;flex-direction:column;}
+.gacha-opt .go-t{font-size:14px;font-weight:800;color:var(--navy);}
+.gacha-opt .go-d{font-size:11px;color:var(--sub);line-height:1.35;}
+.gacha-opt .go-cost{flex:none;font-size:12px;font-weight:800;color:var(--navy);
+  background:var(--gold-soft);border-radius:999px;padding:4px 9px;}
+.gacha-opt.head .go-cost{background:linear-gradient(135deg,#f472b6,#818cf8);color:#fff;}
+
+/* aura leak + shake before flip */
+.gacha-stage{perspective:900px;display:flex;justify-content:center;position:relative;margin:8px 0 14px;}
+.aura{position:absolute;top:50%;left:50%;width:190px;height:190px;transform:translate(-50%,-50%) scale(.5);
+  border-radius:50%;filter:blur(20px);opacity:0;z-index:0;animation:auraPulse 1.2s ease forwards;}
+.aura.n{background:radial-gradient(circle,#ffffff,transparent 68%);}
+.aura.r{background:radial-gradient(circle,#3b82f6,transparent 68%);}
+.aura.sr{background:radial-gradient(circle,#f0c650,transparent 68%);}
+.aura.ssr{background:conic-gradient(from 0deg,#ff5f6d,#ffc371,#5eead4,#818cf8,#f472b6,#ff5f6d);
+  animation:auraPulse 1.2s ease forwards,auraSpin 2.4s linear infinite;}
+@keyframes auraPulse{0%{opacity:0;transform:translate(-50%,-50%) scale(.5);}
+  45%{opacity:.85;transform:translate(-50%,-50%) scale(1);}100%{opacity:.55;transform:translate(-50%,-50%) scale(1.08);}}
+@keyframes auraSpin{to{transform:translate(-50%,-50%) rotate(360deg);}}
+.flip.fx{position:relative;z-index:1;animation:flipFx 1.35s cubic-bezier(.4,.1,.2,1) forwards;}
+@keyframes flipFx{
+  0%{transform:rotateY(0) rotate(0);}8%{transform:rotateY(0) rotate(-4deg);}
+  16%{transform:rotateY(0) rotate(4deg);}24%{transform:rotateY(0) rotate(-4deg);}
+  32%{transform:rotateY(0) rotate(3deg);}44%{transform:rotateY(0) rotate(0);}
+  60%{transform:rotateY(0);}100%{transform:rotateY(180deg);}}
+.flavor{font-size:13px;font-weight:700;color:var(--navy);margin:2px 0 6px;min-height:18px;
+  opacity:0;animation:fvin .5s ease 1s forwards;}
+.flavor.ssr{color:#a15ff2;}
+@keyframes fvin{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+
+/* 10-pull grid */
+.gacha-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;perspective:800px;margin:6px 0 12px;}
+.flip.mini{width:100%;height:auto;aspect-ratio:3/4;animation:flip 1s cubic-bezier(.4,.1,.2,1) both;}
+.flip.mini .side{border-radius:9px;}
+.flip.mini .back{font-size:22px;border-width:1.5px;}
+.flip.mini .front{padding:4px 3px;border-width:2px;}
+.flip.mini .front .fr{font-size:8px;padding:1px 5px;border-radius:4px;}
+.flip.mini .front .mi-e{font-size:16px;margin-top:3px;}
+.flip.mini .front .mi-t{font-size:8px;font-weight:800;color:var(--navy);margin-top:2px;line-height:1.15;
+  max-height:22px;overflow:hidden;}
+.spotlight{margin:2px 0 4px;font-size:12px;font-weight:800;color:var(--gold);letter-spacing:.03em;}
+
+/* confetti (CSS-only) */
+.confetti{position:fixed;inset:0;pointer-events:none;z-index:90;overflow:hidden;}
+.confetti i{position:absolute;top:-24px;border-radius:2px;opacity:.92;animation:confall linear forwards;}
+@keyframes confall{0%{transform:translateY(-24px) rotate(0);}100%{transform:translateY(106vh) rotate(760deg);}}
 </style>
 </head>
 <body>
@@ -284,6 +367,7 @@ textarea.field:focus,input:focus{outline:none;border-color:var(--navy2);}
 <script src="data/cards.js"></script>
 <script src="data/drills.js"></script>
 <script src="data/challenges.js"></script>
+<script src="data/career.js"></script>
 <script>
 (function(){
 "use strict";
@@ -296,6 +380,10 @@ var DRILLS  = Array.isArray(window.DATA_DRILLS)  ? window.DATA_DRILLS  : [];
 var BOSSES  = Array.isArray(window.DATA_BOSSES)  ? window.DATA_BOSSES  : [];
 var QUESTS  = Array.isArray(window.DATA_QUESTS)  ? window.DATA_QUESTS  : [];
 var BOARDS  = Array.isArray(window.DATA_BOARD)   ? window.DATA_BOARD   : [];
+/* ----- career (就活・転職対策) data, guarded ----- */
+var CASES   = Array.isArray(window.DATA_CASES)   ? window.DATA_CASES   : [];
+var SPI     = Array.isArray(window.DATA_SPI)     ? window.DATA_SPI     : [];
+var CQUESTS = Array.isArray(window.DATA_CQUESTS) ? window.DATA_CQUESTS : [];
 var DATA_OK = CARDS.length>0 || DRILLS.length>0 || BOSSES.length>0;
 
 /* =========================================================
@@ -310,6 +398,26 @@ var DEPTS = [
 ];
 var DEPT_MAP={}; DEPTS.forEach(function(d){DEPT_MAP[d.key]=d;});
 var CAT_TO_DEPT={strategy:'kikaku', ma:'kikaku', marketing:'marketing', org:'jinji', failure:'shacho'};
+
+/* ----- 業界（industry）マスタ：12種 ----- */
+var INDUSTRIES=[
+  {key:'tech',          name:'テック',       emo:'💻'},
+  {key:'retail',        name:'小売',         emo:'🛒'},
+  {key:'food',          name:'食品',         emo:'🍔'},
+  {key:'manufacturing', name:'製造',         emo:'🏭'},
+  {key:'auto',          name:'自動車',       emo:'🚗'},
+  {key:'finance',       name:'金融',         emo:'🏦'},
+  {key:'entertainment', name:'エンタメ',     emo:'🎬'},
+  {key:'fashion',       name:'ファッション', emo:'👗'},
+  {key:'logistics',     name:'物流',         emo:'📦'},
+  {key:'service',       name:'サービス',     emo:'🛎️'},
+  {key:'energy',        name:'エネルギー',   emo:'⚡'},
+  {key:'pharma',        name:'製薬',         emo:'💊'}
+];
+var INDUSTRY_MAP={}; INDUSTRIES.forEach(function(i){INDUSTRY_MAP[i.key]=i;});
+function industryName(k){return (INDUSTRY_MAP[k]&&INDUSTRY_MAP[k].name)||'';}
+function industryEmo(k){return (INDUSTRY_MAP[k]&&INDUSTRY_MAP[k].emo)||'🏢';}
+function industryCards(k){return CARDS.filter(function(c){return c.industry===k;});}
 
 var STAGES=[
   {min:0,     name:'個人事業主',   emo:'🏠'},
@@ -361,6 +469,13 @@ function defaultState(){
     dailyCardId:'',           /* the card obtained today */
     dailyDrill:{date:'',count:0,bonus:false},
     firstGachaSR:false,
+    gachaPity:0,               /* 天井カウンター：SSR未排出の連続排出枚数 */
+    /* ----- 就活・転職対策（v2追加） ----- */
+    casesWon:[],              /* クリア済みケース面接ID */
+    spiHistory:{},            /* {spiId:'YYYY-MM-DD'} Webテスト設問ごとの最終XP付与日 */
+    spiGenreStats:{},         /* {genre:{correct:n,total:n}} 正答率トラッキング */
+    dailySpi:{date:'',bonus:false}, /* Webテストセッション完了ボーナス（1日1回） */
+    industryBadges:[],        /* 獲得済み業界マスターバッジ */
     createdAt:Date.now()
   };
 }
@@ -372,6 +487,13 @@ function load(){
     S=Object.assign(defaultState(),p);
     S.deptXP=Object.assign({keiri:0,kikaku:0,marketing:0,jinji:0,shacho:0},p.deptXP||{});
     S.dailyDrill=Object.assign({date:'',count:0,bonus:false},p.dailyDrill||{});
+    /* v2 migration (older saves lack these) */
+    S.casesWon=Array.isArray(p.casesWon)?p.casesWon:[];
+    S.spiHistory=(p.spiHistory&&typeof p.spiHistory==='object')?p.spiHistory:{};
+    S.spiGenreStats=(p.spiGenreStats&&typeof p.spiGenreStats==='object')?p.spiGenreStats:{};
+    S.dailySpi=Object.assign({date:'',bonus:false},p.dailySpi||{});
+    S.industryBadges=Array.isArray(p.industryBadges)?p.industryBadges:[];
+    S.gachaPity=(typeof p.gachaPity==='number'&&p.gachaPity>=0)?p.gachaPity:0;
   }catch(e){S=defaultState();}
 }
 function save(){try{localStorage.setItem(SAVE_KEY,JSON.stringify(S));}catch(e){}}
@@ -468,7 +590,37 @@ var UI={screen:'home', sub:null, data:{}};
 function nav(scr){UI.screen=scr;UI.sub=null;UI.data={};render();window.scrollTo(0,0);}
 function go(sub,data){UI.sub=sub;UI.data=data||{};render();window.scrollTo(0,0);}
 
+/* ----- countdown timer (deadline-based, survives re-render) ----- */
+var TIMER=null;
+function clearTimer(){if(TIMER){clearInterval(TIMER);TIMER=null;}}
+function fmtClock(sec){sec=Math.max(0,Math.floor(sec));var m=Math.floor(sec/60),s=sec%60;return (m<10?'0'+m:m)+':'+(s<10?'0'+s:s);}
+function armTimer(barId,numId,onZero){
+  clearTimer();
+  var bar=document.getElementById(barId), num=document.getElementById(numId);
+  if(!bar||!num||!UI.data.deadline)return;
+  var total=UI.data.timerTotal||1;
+  function tick(){
+    var rem=Math.round((UI.data.deadline-Date.now())/1000);
+    if(rem<=0){
+      if(!UI.data.over){UI.data.over=true; if(typeof onZero==='function')onZero();}
+      num.textContent='時間超過 +'+fmtClock(-rem);
+      num.style.color='var(--ng)';
+      bar.style.width='0%'; bar.style.background='var(--ng)';
+    }else{
+      num.textContent=fmtClock(rem);
+      bar.style.width=Math.max(0,Math.min(100,rem/total*100))+'%';
+    }
+  }
+  tick();
+  TIMER=setInterval(tick,500);
+}
+function timerBar(){
+  return '<div class="timer-wrap"><div class="timer-num" id="csTimerNum">--:--</div>'+
+    '<div class="bar timer-bar"><span id="csTimerBar" style="width:100%"></span></div></div>';
+}
+
 function render(){
+  clearTimer();
   refreshTopbar();
   refreshNav();
   var host=document.getElementById('screen');
@@ -546,7 +698,9 @@ function viewHome(){
     stat('🎫 ガチャチケット', S.tickets+'枚')+
     stat('📇 図鑑', S.ownedCards.length+' / '+CARDS.length)+
     stat('⚔️ ボス撃破', S.bossWins.length+' / '+BOSSES.length)+
-    stat('🔬 クエスト', S.questsDone.length+' / '+QUESTS.length)+
+    stat('🔬 クエスト', S.questsDone.length+' / '+(QUESTS.length+CQUESTS.length))+
+    stat('🎤 ケース面接', S.casesWon.length+' / '+CASES.length)+
+    stat('🏅 業界バッジ', S.industryBadges.length+' / '+INDUSTRIES.length)+
   '</div>';
 
   html+='<div class="card"><h3>🏗️ スキルツリー（部門レベル）</h3>';
@@ -561,11 +715,14 @@ function viewHome(){
   });
   html+='</div>';
 
+  var spiDone = S.dailySpi.date===todayStr() && S.dailySpi.bonus;
   html+='<div class="card"><h3>🎯 今日のミッション</h3><div class="mission">'+
     '<div class="m'+(cardDone?' done':'')+'"><div class="ic">📇</div><div class="t">事例カード</div>'+
       '<div class="s">'+(cardDone?'完了 ✓':'未達成')+'</div></div>'+
     '<div class="m'+(drillDone?' done':'')+'"><div class="ic">📝</div><div class="t">ドリル10問</div>'+
       '<div class="s">'+(drillDone?'完了 ✓':drillCount+' / 10問')+'</div></div>'+
+    '<div class="m'+(spiDone?' done':'')+'"><div class="ic">⏱️</div><div class="t">Webテスト</div>'+
+      '<div class="s">'+(spiDone?'完了 ✓':'未達成')+'</div></div>'+
   '</div>'+
   '<button class="btn gold" style="margin-top:12px" onclick="APP.nav(\'daily\')">今日の学習へ →</button>'+
   '</div>';
@@ -601,6 +758,7 @@ function viewDaily(){
   if(UI.sub==='card') return viewDailyCard();
   if(UI.sub==='drillPick') return viewDrillPick();
   if(UI.sub==='drill') return viewDrillSession();
+  if(UI.sub==='spi') return viewSpiSession();
 
   var cardDone=S.dailyCardDate===todayStr();
   var dd=S.dailyDrill; var cnt=dd.date===todayStr()?dd.count:0; var bonus=dd.date===todayStr()&&dd.bonus;
@@ -624,6 +782,21 @@ function viewDaily(){
       '<div class="lv">Lv.'+p.lv+' ・ '+n+'問</div></button>';
   });
   html+='</div>';
+
+  /* ----- Webテスト（SPI） ----- */
+  var spiBonus = S.dailySpi.date===todayStr() && S.dailySpi.bonus;
+  html+='<div class="sec-title">⏱️ Webテスト</div>';
+  if(SPI.length===0){
+    html+='<p class="muted" style="margin:0 0 4px 2px">問題データ準備中です。</p>';
+  }else{
+    html+='<p class="muted" style="margin:0 0 10px 2px">制限時間つきの一問一答を10問。'+
+      'セッション完了で <b>+50XP</b> とチケット1枚（1日1回）。正解ごとに 10×Lv XP。'+
+      (spiBonus?'<br><b style="color:var(--ok)">本日のボーナス獲得済 ✓</b>':'')+'</p>';
+    html+='<button class="lrow" onclick="APP.startSpi()">'+
+      '<div class="ic">⏱️</div><div class="body"><div class="t">Webテスト 10問チャレンジ</div>'+
+      '<div class="s">SPI・玉手箱型の言語/非言語ミックス</div></div>'+
+      '<div style="font-size:20px;color:var(--gold)">›</div></button>';
+  }
   return html;
 }
 
@@ -691,6 +864,7 @@ function answerCard(i){
     S.dailyCardId=c.id; S.dailyCardDate=todayStr(); save();
     if(correct){gainXP(30, CAT_TO_DEPT[c.category]||'shacho');toast('🎉 正解！ +30XP','gold');}
     else{toast('カードは獲得しました');}
+    checkIndustryBadges();
     showCardObtained(c);
   }
   render();
@@ -702,6 +876,7 @@ function claimCard(id){
     touchStreak();
     if(!owns(c.id))S.ownedCards.push(c.id);
     S.dailyCardId=c.id;S.dailyCardDate=todayStr();save();
+    checkIndustryBadges();
     showCardObtained(c);
   }
   render();
@@ -821,9 +996,24 @@ function viewChallenge(){
   if(UI.sub==='boss')  return viewBoss();
   if(UI.sub==='quest') return viewQuest();
   if(UI.sub==='board') return viewBoard();
+  if(UI.sub==='case')  return viewCase();
 
   var html='<h2 style="font-size:20px;color:var(--navy);margin-bottom:6px">⚔️ 挑戦</h2>';
   html+='<p class="muted" style="margin:0 0 12px 2px">実務レベルの課題で経営思考を鍛える。</p>';
+
+  /* ----- ケース面接 ----- */
+  html+='<div class="sec-title">🎤 ケース面接</div>';
+  if(CASES.length===0){
+    html+='<p class="muted">データ準備中</p>';
+  }else{
+    CASES.forEach(function(c){
+      var won=S.casesWon.indexOf(c.id)>=0;
+      html+='<button class="lrow" onclick="APP.go(\'case\',{id:\''+esc(c.id)+'\'})">'+
+        '<div class="ic">'+(won?'🏆':'🎤')+'</div><div class="body">'+
+        '<div class="t">'+esc(c.title)+'</div><div class="s"><span class="stars">'+stars(c.difficulty)+'</span> ・ +'+(c.xp||0)+'XP ・ チケット2枚</div></div>'+
+        (won?'<div class="done-mark">クリア ✓</div>':'<div style="font-size:20px;color:var(--gold)">›</div>')+'</button>';
+    });
+  }
 
   html+='<div class="sec-title">👹 ボス戦（フェルミ推定・意思決定）</div>';
   if(BOSSES.length===0)html+='<p class="muted">データ準備中</p>';
@@ -836,12 +1026,21 @@ function viewChallenge(){
   });
 
   html+='<div class="sec-title">🔬 リサーチクエスト</div>';
-  if(QUESTS.length===0)html+='<p class="muted">データ準備中</p>';
+  if(QUESTS.length===0 && CQUESTS.length===0)html+='<p class="muted">データ準備中</p>';
   QUESTS.forEach(function(q){
     var done=S.questsDone.indexOf(q.id)>=0;
-    html+='<button class="lrow" onclick="APP.go(\'quest\',{id:\''+q.id+'\'})">'+
+    html+='<button class="lrow" onclick="APP.go(\'quest\',{id:\''+esc(q.id)+'\'})">'+
       '<div class="ic">'+(done?'✅':'🔬')+'</div><div class="body">'+
       '<div class="t">'+esc(q.title)+'</div><div class="s">+'+(q.xp||0)+'XP ・ チケット1枚</div></div>'+
+      (done?'<div class="done-mark">完了 ✓</div>':'<div style="font-size:20px;color:var(--gold)">›</div>')+'</button>';
+  });
+  /* ----- 志望企業クエスト（選考対策） ----- */
+  CQUESTS.forEach(function(q){
+    var done=S.questsDone.indexOf(q.id)>=0;
+    html+='<button class="lrow" onclick="APP.go(\'quest\',{id:\''+esc(q.id)+'\'})">'+
+      '<div class="ic">'+(done?'✅':'🎯')+'</div><div class="body">'+
+      '<div class="t">'+esc(q.title)+'<span class="cbadge">🎯 選考対策</span></div>'+
+      '<div class="s">+'+(q.xp||0)+'XP ・ チケット1枚</div></div>'+
       (done?'<div class="done-mark">完了 ✓</div>':'<div style="font-size:20px;color:var(--gold)">›</div>')+'</button>';
   });
 
@@ -930,15 +1129,25 @@ function showBossWin(b, first){
     '<div class="btns"><button class="btn gold" onclick="APP.closeModal()">勝利！</button></div></div>');
 }
 
-/* ----- quest ----- */
+/* ----- quest (research + career) ----- */
+function findQuest(id){
+  var q=QUESTS.filter(function(x){return x.id===id;})[0];
+  if(q)return {q:q,career:false};
+  q=CQUESTS.filter(function(x){return x.id===id;})[0];
+  if(q)return {q:q,career:true};
+  return null;
+}
 function viewQuest(){
-  var q=QUESTS.filter(function(x){return x.id===UI.data.id;})[0];
-  if(!q)return backBtn('challenge')+'<p class="muted">クエストが見つかりません。</p>';
+  var f=findQuest(UI.data.id);
+  if(!f)return backBtn('challenge')+'<p class="muted">クエストが見つかりません。</p>';
+  var q=f.q;
   var done=S.questsDone.indexOf(q.id)>=0;
-  var checks=UI.data.checks || (done?[true,true,true,true,true]:[false,false,false,false,false]);
+  var n=(q.checklist||[]).length||5;
+  var initChecks=[];for(var _i=0;_i<n;_i++)initChecks.push(done);
+  var checks=UI.data.checks || initChecks;
   UI.data.checks=checks;
   var html=backBtn('challenge');
-  html+='<span class="tag">🔬 リサーチクエスト</span>';
+  html+='<span class="tag">'+(f.career?'🎯 選考対策':'🔬 リサーチクエスト')+'</span>';
   html+='<h2 style="font-size:18px;color:var(--navy);margin:2px 0 10px">'+esc(q.title)+'</h2>';
   html+='<div class="qbox">'+esc(q.mission)+'</div>';
   if(q.guide&&q.guide.length){
@@ -969,7 +1178,8 @@ function toggleCheck(i){
   render();
 }
 function completeQuest(id){
-  var q=QUESTS.filter(function(x){return x.id===id;})[0]; if(!q)return;
+  var f=findQuest(id); if(!f)return;
+  var q=f.q;
   if(S.questsDone.indexOf(id)>=0)return;
   touchStreak();
   S.questsDone.push(id);
@@ -1052,19 +1262,348 @@ function completeBoard(id){
 }
 
 /* =========================================================
+   CASE INTERVIEW（ケース面接）
+   ========================================================= */
+function getCase(){return CASES.filter(function(x){return x.id===UI.data.id;})[0];}
+function viewCase(){
+  var c=getCase();
+  if(!c)return backBtn('challenge')+'<p class="muted">ケースが見つかりません。</p>';
+  var phase=UI.data.phase||'intro';
+  if(phase==='think')    return viewCaseThink(c);
+  if(phase==='answer')   return viewCaseAnswer(c);
+  if(phase==='followup') return viewCaseFollowup(c);
+  if(phase==='model')    return viewCaseModel(c);
+  return viewCaseIntro(c);
+}
+function viewCaseIntro(c){
+  var won=S.casesWon.indexOf(c.id)>=0;
+  var tl=c.timeLimits||{};
+  var html=backBtn('challenge');
+  html+='<span class="tag">🎤 ケース面接 '+stars(c.difficulty)+'</span>';
+  html+='<h2 style="font-size:18px;color:var(--navy);margin:2px 0 10px">'+esc(c.title)+'</h2>';
+  if(won)html+='<div class="explain ok"><b>クリア済み ✓</b> 何度でも練習できます（XP・チケットは初回のみ）。</div>';
+  html+='<div class="qbox">'+esc(c.question)+'</div>';
+  html+='<div class="card"><h3>🕐 進め方</h3><p class="muted" style="font-size:13px;margin:0">'+
+    '① 思考タイム（'+(tl.think||180)+'秒）で4フレーム整理 → ② 回答タイム（'+(tl.answer||120)+'秒）で結論を記述 → '+
+    '③ 面接官の深掘り → ④ 模範解答＆自己評価。<br>時間を超えても続行できますが、超過すると獲得XPが8割になります。</p></div>';
+  html+='<button class="btn gold" onclick="APP.casePhase(\'think\')">思考タイムを開始 →</button>';
+  return html;
+}
+function viewCaseThink(c){
+  var frame=c.frame||[];
+  var html=backBtn('challenge')+timerBar();
+  html+='<span class="tag">🧠 思考タイム</span>';
+  html+='<div class="muted" style="font-size:12px;margin:4px 0 8px">4つのフレームで論点を整理。ヒントは開いて確認できます。</div>';
+  frame.forEach(function(f,i){
+    html+='<details class="step"><summary>STEP'+(i+1)+'：'+esc(f.name)+'</summary>'+
+      '<div class="hint">💡 '+esc(f.hint)+'</div>'+
+      '<div style="padding:0 13px 12px"><textarea class="field" id="cframe'+i+'" placeholder="ここに考えをメモ…">'+esc((UI.data.memo&&UI.data.memo[i])||'')+'</textarea></div></details>';
+  });
+  if(frame.length===0)html+='<p class="muted">フレームデータがありません。</p>';
+  html+='<button class="btn gold" style="margin-top:8px" onclick="APP.caseToAnswer()">回答タイムへ →</button>';
+  UI._after=function(){armTimer('csTimerBar','csTimerNum',function(){toast('思考タイム終了（超過分はXP-20%）');});};
+  return html;
+}
+function viewCaseAnswer(c){
+  var html=backBtn('challenge')+timerBar();
+  html+='<span class="tag">✍️ 回答タイム</span>';
+  html+='<div class="muted" style="font-size:12px;margin:4px 0 8px">結論ファースト。「結論→根拠→具体」で簡潔に。</div>';
+  var memo=UI.data.memo||[];
+  if(memo.some(function(m){return m&&m.trim();})){
+    html+='<div class="model" style="border-color:var(--navy2);margin-top:0"><h4>📝 思考メモ</h4>';
+    (c.frame||[]).forEach(function(f,i){var m=memo[i];if(m&&m.trim())html+='<div style="margin-bottom:4px"><b>'+esc(f.name)+'：</b>'+esc(m)+'</div>';});
+    html+='</div>';
+  }
+  html+='<div class="card"><h3>🎯 あなたの結論</h3>'+
+    '<textarea class="field" id="cans" style="min-height:120px" placeholder="結論と根拠を記述…">'+esc(UI.data.ans||'')+'</textarea></div>';
+  html+='<button class="btn gold" onclick="APP.caseSubmit()">提出する →</button>';
+  UI._after=function(){armTimer('csTimerBar','csTimerNum',function(){toast('回答タイム終了（超過分はXP-20%）');});};
+  return html;
+}
+function viewCaseFollowup(c){
+  var fu=c.followups||[];
+  var idx=UI.data.fuIdx||0;
+  var html=backBtn('challenge');
+  html+='<span class="tag">🔍 面接官の深掘り</span>';
+  html+='<div class="muted" style="font-size:12px;margin:4px 0 8px">深掘り '+(idx+1)+' / '+fu.length+'</div>';
+  html+='<div class="fu-q">Q. '+esc(fu[idx]||'')+'</div>';
+  html+='<textarea class="field" id="cfu" style="min-height:90px" placeholder="短く回答…">'+esc((UI.data.fuAns&&UI.data.fuAns[idx])||'')+'</textarea>';
+  var last=idx>=fu.length-1;
+  html+='<button class="btn'+(last?' gold':'')+'" style="margin-top:12px" onclick="APP.caseNextFollowup()">'+(last?'模範解答を見る →':'次の深掘り →')+'</button>';
+  return html;
+}
+function viewCaseModel(c){
+  var won=S.casesWon.indexOf(c.id)>=0;
+  var m=c.model||{};
+  var html=backBtn('challenge');
+  html+='<span class="tag">📐 模範解答</span>';
+  html+='<h2 style="font-size:18px;color:var(--navy);margin:2px 0 10px">'+esc(c.title)+'</h2>';
+  if(UI.data.ans)html+='<div class="explain"><b>あなたの結論</b><br>'+esc(UI.data.ans)+'</div>';
+  html+='<div class="model"><h4>🧭 アプローチ</h4><div>'+esc(m.approach||'')+'</div>'+
+    '<div class="res" style="margin-top:10px">結論例</div><div>'+esc(m.answer||'')+'</div></div>';
+  html+='<div class="card" style="border-left:4px solid var(--gold)"><h3>💬 面接Tips</h3>'+
+    '<ul style="margin:0;padding-left:18px;font-size:13px">'+
+    '<li style="margin-bottom:4px">結論から話す。まず答え、それから根拠と具体</li>'+
+    '<li style="margin-bottom:4px">実際に声に出して答える練習をすると本番で詰まりにくい</li>'+
+    '<li style="margin-bottom:4px">沈黙を恐れず「少し考えます」と宣言してOK</li>'+
+    '<li style="margin-bottom:4px">数字は前提を置いて概算。桁感が合っていれば十分</li>'+
+    '</ul></div>';
+  if(UI.data.over)html+='<div class="explain ng"><b>⏱️ 時間超過</b> 制限時間を超えたため獲得XPは8割になります。</div>';
+  if(!won){
+    html+='<div class="sec-title">🧑‍⚖️ 自己評価</div>';
+    html+='<p class="help">模範解答と見比べ、自分の回答を評価してください。</p>';
+    var ev=UI.data.evalPick||null;
+    html+='<div class="evalpick">'+['S','A','B'].map(function(g){return '<button class="'+(ev===g?'on':'')+'" onclick="APP.setCaseEval(\''+g+'\')">'+g+'評価</button>';}).join('')+'</div>';
+    html+='<button class="btn gold" style="margin-top:12px" '+(ev?'':'disabled')+' onclick="APP.caseWin(\''+esc(c.id)+'\')">面接クリア！</button>';
+  }else{
+    html+='<div class="explain ok" style="margin-top:12px"><b>クリア済み ✓</b> お疲れさまでした。</div>';
+    html+='<button class="btn ghost" style="margin-top:10px" onclick="APP.go(null)">挑戦一覧へ</button>';
+  }
+  return html;
+}
+function casePhase(p){
+  var c=getCase(); if(!c)return;
+  var tl=c.timeLimits||{};
+  if(p==='think'){
+    UI.data.phase='think';
+    UI.data.timerTotal=tl.think||180;
+    UI.data.deadline=Date.now()+(tl.think||180)*1000;
+    if(!UI.data.memo)UI.data.memo=[];
+    UI.data.over=UI.data.over||false;
+  }
+  render();window.scrollTo(0,0);
+}
+function caseToAnswer(){
+  var c=getCase(); if(!c)return;
+  var memo=[];(c.frame||[]).forEach(function(f,i){var el=document.getElementById('cframe'+i);memo[i]=el?el.value:((UI.data.memo||[])[i]||'');});
+  UI.data.memo=memo;
+  var tl=c.timeLimits||{};
+  UI.data.phase='answer';
+  UI.data.timerTotal=tl.answer||120;
+  UI.data.deadline=Date.now()+(tl.answer||120)*1000;
+  render();window.scrollTo(0,0);
+}
+function caseSubmit(){
+  var c=getCase(); if(!c)return;
+  var el=document.getElementById('cans');
+  var ans=el?el.value.trim():'';
+  if(!ans){toast('結論を記述してください');return;}
+  UI.data.ans=ans;
+  clearTimer(); UI.data.deadline=null;
+  var fu=c.followups||[];
+  if(fu.length>0){UI.data.phase='followup';UI.data.fuIdx=0;UI.data.fuAns=[];}
+  else{UI.data.phase='model';}
+  render();window.scrollTo(0,0);
+}
+function caseNextFollowup(){
+  var c=getCase(); if(!c)return;
+  var fu=c.followups||[];
+  var idx=UI.data.fuIdx||0;
+  var el=document.getElementById('cfu');
+  if(!UI.data.fuAns)UI.data.fuAns=[];
+  UI.data.fuAns[idx]=el?el.value:'';
+  if(idx>=fu.length-1)UI.data.phase='model';
+  else UI.data.fuIdx=idx+1;
+  render();window.scrollTo(0,0);
+}
+function setCaseEval(g){UI.data.evalPick=g;render();}
+function caseWin(id){
+  var c=CASES.filter(function(x){return x.id===id;})[0]; if(!c)return;
+  clearTimer();
+  if(S.casesWon.indexOf(id)>=0){toast('クリア済みです');return;}
+  touchStreak();
+  S.casesWon.push(id);
+  S.tickets+=2;
+  var base=c.xp||120;
+  var xp=UI.data.over?Math.round(base*0.8):base;
+  gainXP(xp,'distribute');
+  save();
+  modal('<div class="modal"><div class="big shine">🎤🏆</div><h3>面接クリア！</h3>'+
+    '<p>'+esc(c.title)+'<br>自己評価：<b>'+esc(UI.data.evalPick||'-')+'</b><br>+'+xp+'XP'+(UI.data.over?'（時間超過 -20%）':'')+' ／ 🎫 チケット2枚</p>'+
+    '<div class="btns"><button class="btn gold" onclick="APP.closeModal();APP.go(null)">戻る</button></div></div>');
+}
+
+/* =========================================================
+   WEB TEST（SPI / Webテスト）
+   ========================================================= */
+function spiGenreName(g){return g||'その他';}
+function spiGenreAccuracy(g){var st=S.spiGenreStats[g];if(!st||!st.total)return 0.5;return st.correct/st.total;}
+function spiStartQuestion(){
+  var d=UI.data; var q=d.list[d.idx];
+  d.picked=null; d.over=false;
+  var tl=(q&&q.timeLimit)||60;
+  d.timerTotal=tl;
+  d.deadline=Date.now()+tl*1000;
+}
+function startSpi(){
+  if(SPI.length===0){toast('Webテストのデータがありません');return;}
+  var scored=SPI.map(function(q){return {q:q, w:spiGenreAccuracy(q.genre)+Math.random()*0.7};})
+    .sort(function(a,b){return a.w-b.w;});
+  var picked=scored.slice(0,Math.min(10,scored.length)).map(function(x){return x.q;});
+  for(var i=picked.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=picked[i];picked[i]=picked[j];picked[j]=t;}
+  UI.sub='spi';
+  UI.data={list:picked, idx:0, picked:null, correct:0, genreRes:{}};
+  spiStartQuestion();
+  render();window.scrollTo(0,0);
+}
+function viewSpiSession(){
+  var d=UI.data;
+  if(!d.list||!d.list.length)return backBtn('daily')+'<p class="muted">問題がありません。</p>';
+  var q=d.list[d.idx];
+  var html=backBtn('daily');
+  html+='<div class="qmeta"><span>⏱️ Webテスト</span><span>正解 '+d.correct+'</span></div>';
+  html+='<div class="dots" style="margin-bottom:10px">';
+  for(var i=0;i<d.list.length;i++){html+='<i class="'+(i<d.idx?'on':i===d.idx?'now':'')+'"></i>';}
+  html+='</div>';
+  if(d.picked==null)html+=timerBar();
+  html+='<div class="card"><div class="muted" style="font-size:11px;margin-bottom:4px">第'+(d.idx+1)+'問 ・ '+esc(spiGenreName(q.genre))+' ・ Lv.'+(q.level||1)+' ・ +'+(10*(q.level||1))+'XP</div>';
+  html+='<p style="font-weight:700;font-size:15px">'+esc(q.q)+'</p>';
+  html+='<div class="choices">';
+  (q.choices||[]).forEach(function(ch,i){
+    var cls='choice';
+    if(d.picked!=null){
+      if(i===q.answer)cls+=' correct';
+      else if(i===d.picked)cls+=' wrong';
+      else cls+=' dim';
+    }
+    html+='<button class="'+cls+'"'+(d.picked!=null?' disabled':'')+' onclick="APP.answerSpi('+i+')">'+
+      '<span class="lab">'+String.fromCharCode(65+i)+'</span><span>'+esc(ch)+'</span></button>';
+  });
+  html+='</div>';
+  if(d.picked!=null){
+    var ok=d.picked===q.answer;
+    var to=d.picked===-1;
+    html+='<div class="explain '+(ok?'ok':'ng')+'"><b>'+(ok?'正解！':(to?'時間切れ … 不正解':'不正解'))+'</b><br>'+esc(q.explanation||'')+'</div>';
+    var last=d.idx>=d.list.length-1;
+    html+='<button class="btn'+(last?' gold':'')+'" style="margin-top:12px" onclick="APP.nextSpi()">'+(last?'結果を見る':'次の問題 →')+'</button>';
+  }
+  html+='</div>';
+  if(d.picked==null)UI._after=function(){armTimer('csTimerBar','csTimerNum',function(){APP.spiTimeout();});};
+  return html;
+}
+function spiRecord(q,correct){
+  var d=UI.data; var g=q.genre||'other';
+  if(!d.genreRes[g])d.genreRes[g]={correct:0,total:0};
+  d.genreRes[g].total++; if(correct)d.genreRes[g].correct++;
+  if(!S.spiGenreStats[g])S.spiGenreStats[g]={correct:0,total:0};
+  S.spiGenreStats[g].total++; if(correct)S.spiGenreStats[g].correct++;
+}
+function answerSpi(i){
+  var d=UI.data; if(d.picked!=null)return;
+  clearTimer(); touchStreak();
+  var q=d.list[d.idx];
+  d.picked=i;
+  var correct=(i===q.answer);
+  spiRecord(q,correct);
+  if(correct){
+    d.correct++;
+    if(S.spiHistory[q.id]!==todayStr()){
+      S.spiHistory[q.id]=todayStr();
+      gainXP(10*(q.level||1),'shacho');
+      toast('+'+(10*(q.level||1))+'XP','gold');
+    }else{toast('正解（本日XP獲得済）');}
+  }
+  save();render();
+}
+function spiTimeout(){
+  var d=UI.data; if(d.picked!=null)return;
+  clearTimer(); touchStreak();
+  var q=d.list[d.idx];
+  d.picked=-1;
+  spiRecord(q,false);
+  toast('時間切れ');
+  save();render();
+}
+function nextSpi(){
+  var d=UI.data;
+  if(d.idx>=d.list.length-1){
+    var bonusGiven=false;
+    if(!(S.dailySpi.date===todayStr() && S.dailySpi.bonus)){
+      S.dailySpi={date:todayStr(),bonus:true};
+      S.tickets+=1;
+      gainXP(50,'shacho');
+      bonusGiven=true;
+    }
+    save();
+    UI.sub=null;
+    render();
+    showSpiResult(d,bonusGiven);
+  }else{
+    d.idx++;
+    spiStartQuestion();
+    render();window.scrollTo(0,0);
+  }
+}
+function showSpiResult(d,bonusGiven){
+  var rows='';
+  Object.keys(d.genreRes).forEach(function(g){
+    var r=d.genreRes[g];
+    rows+='<div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:3px"><span>'+esc(spiGenreName(g))+'</span><b>'+r.correct+' / '+r.total+'</b></div>';
+  });
+  modal('<div class="modal"><div class="big">'+(d.correct>=8?'🏆':d.correct>=5?'👍':'💪')+'</div>'+
+    '<h3>Webテスト終了</h3>'+
+    '<p>'+d.list.length+'問中 <b style="color:var(--navy);font-size:18px">'+d.correct+'</b> 問正解！'+
+    (bonusGiven?'<br>🎊 完了ボーナス +50XP ／ 🎫 チケット1枚':'<br>（本日の完了ボーナスは獲得済み）')+'</p>'+
+    '<div style="text-align:left;background:#f3f6fc;border-radius:12px;padding:12px;margin-bottom:14px">'+
+    '<div style="font-weight:800;font-size:12px;color:var(--navy);margin-bottom:6px">ジャンル別正答率</div>'+(rows||'<span class="muted">-</span>')+'</div>'+
+    '<div class="btns"><button class="btn gold" onclick="APP.closeModal()">閉じる</button></div></div>');
+}
+
+/* =========================================================
+   INDUSTRY BADGES（業界マスター）
+   ========================================================= */
+function checkIndustryBadges(){
+  var newly=[];
+  INDUSTRIES.forEach(function(ind){
+    if(S.industryBadges.indexOf(ind.key)>=0)return;
+    var cs=industryCards(ind.key);
+    if(cs.length>0 && cs.every(function(c){return owns(c.id);})){
+      S.industryBadges.push(ind.key); newly.push(ind);
+    }
+  });
+  if(newly.length){save();newly.forEach(function(ind){toast('🏅 '+ind.name+'業界マスター獲得！','gold');});}
+  return newly;
+}
+
+/* =========================================================
    DEX + GACHA
    ========================================================= */
+var DEX_FILTER='all';
+function dexFilter(k){DEX_FILTER=k;render();window.scrollTo(0,0);}
 function viewDex(){
   if(UI.sub==='card') return viewDexCard();
   var owned=S.ownedCards.length, total=CARDS.length;
   var html='<div class="dexbar"><div class="prog">🗂️ 図鑑 '+owned+' / '+total+'</div>'+
     '<button class="btn gold sm" onclick="APP.openGacha()">🎫 ガチャ ('+S.tickets+')</button></div>';
   html+='<div class="bar" style="margin-bottom:14px"><span style="width:'+(total?owned/total*100:0).toFixed(0)+'%"></span></div>';
+
+  /* ----- 業界研究デッキ：バッジ＋フィルタ（industry未定義ならスキップ） ----- */
+  var hasIndustry=CARDS.some(function(c){return c.industry;});
+  if(!hasIndustry)DEX_FILTER='all';
+  if(hasIndustry){
+    html+='<div class="card"><h3>🏅 業界マスターバッジ（'+S.industryBadges.length+' / '+INDUSTRIES.length+'）</h3>';
+    html+='<p class="muted" style="font-size:12px;margin:0 0 8px">ある業界のカードを全部集めるとバッジ獲得。</p>';
+    html+='<div class="badge-wall">';
+    INDUSTRIES.forEach(function(ind){
+      var got=S.industryBadges.indexOf(ind.key)>=0;
+      html+='<div class="ibadge'+(got?' on':'')+'"><div class="ic">'+ind.emo+'</div><div class="nm">'+esc(ind.name)+'</div></div>';
+    });
+    html+='</div></div>';
+    html+='<div class="ind-chips">';
+    html+='<button class="ind-chip'+(DEX_FILTER==='all'?' on':'')+'" onclick="APP.dexFilter(\'all\')">すべて</button>';
+    INDUSTRIES.forEach(function(ind){
+      var mastered=S.industryBadges.indexOf(ind.key)>=0;
+      html+='<button class="ind-chip'+(DEX_FILTER===ind.key?' on':'')+(mastered?' mastered':'')+'" onclick="APP.dexFilter(\''+ind.key+'\')">'+ind.emo+' '+esc(ind.name)+'</button>';
+    });
+    html+='</div>';
+  }
+
+  var shown=CARDS.filter(function(c){return DEX_FILTER==='all'||c.industry===DEX_FILTER;});
   html+='<div class="dexgrid">';
-  CARDS.forEach(function(c){
+  shown.forEach(function(c){
     if(owns(c.id)){
       var rc=rarClass(c.rarity);
-      html+='<button class="dcard '+rc+'" onclick="APP.go(\'card\',{id:\''+c.id+'\'})">'+
+      html+='<button class="dcard '+rc+'" onclick="APP.go(\'card\',{id:\''+esc(c.id)+'\'})">'+
         '<span class="rr">'+esc(c.rarity)+'</span><span class="catemo">'+catEmoji(c.category)+'</span>'+
         '<div class="cco">'+esc(c.company||'')+'</div><div class="cti">'+esc(c.title)+'</div></button>';
     }else{
@@ -1073,6 +1612,7 @@ function viewDex(){
   });
   html+='</div>';
   if(CARDS.length===0)html+='<p class="muted">カードデータ準備中</p>';
+  else if(shown.length===0)html+='<p class="muted" style="text-align:center;margin-top:14px">この業界のカードはまだありません。</p>';
   return html;
 }
 function viewDexCard(){
@@ -1082,7 +1622,8 @@ function viewDexCard(){
   html+='<div class="card">';
   html+='<span class="tag">'+esc(c.company||'事例')+(c.year?' ・ '+esc(c.year):'')+'</span>';
   html+='<h2 style="font-size:18px;color:var(--navy);margin:2px 0 4px">'+esc(c.title)+'</h2>';
-  html+='<div class="muted" style="font-size:12px;margin-bottom:8px">'+catEmoji(c.category)+' '+catName(c.category)+' ・ '+esc(c.rarity)+'</div>';
+  html+='<div class="muted" style="font-size:12px;margin-bottom:8px">'+catEmoji(c.category)+' '+catName(c.category)+' ・ '+esc(c.rarity)+
+    (c.industry?' ・ '+industryEmo(c.industry)+' '+esc(industryName(c.industry)):'')+'</div>';
   html+='<p style="font-size:14px">'+esc(c.summary)+'</p>';
   if(c.insight)html+='<div class="explain" style="border-color:var(--gold);margin-top:10px"><b>💡 学びのポイント</b><br>'+esc(c.insight)+'</div>';
   html+='</div>';
@@ -1092,43 +1633,237 @@ function viewDexCard(){
   }
   return html;
 }
-function openGacha(){
-  if(S.tickets<=0){toast('チケットがありません。学習で集めよう！');return;}
-  var unowned=CARDS.filter(function(c){return !owns(c.id);});
-  S.tickets--;
-  if(unowned.length===0){
-    gainXP(100,'shacho');save();
-    modal('<div class="modal"><div class="big">💯</div><h3>コンプリート済み！</h3>'+
-      '<p>全カード所持のため、チケットを100XPに変換しました。</p>'+
-      '<div class="btns"><button class="btn gold" onclick="APP.closeModal()">OK</button></div></div>');
-    render();return;
-  }
-  /* weighted rarity among available */
-  var pool={};unowned.forEach(function(c){(pool[c.rarity]=pool[c.rarity]||[]).push(c);});
-  var avail=Object.keys(pool);
-  var totalW=avail.reduce(function(s,r){return s+(RARITY_W[r]||1);},0);
-  var roll=Math.random()*totalW, chosen=avail[0];
-  for(var i=0;i<avail.length;i++){var w=RARITY_W[avail[i]]||1;if(roll<w){chosen=avail[i];break;}roll-=w;}
-  var list=pool[chosen];
-  var card=list[Math.floor(Math.random()*list.length)];
-  S.ownedCards.push(card.id);
-  var big = (card.rarity==='SR'||card.rarity==='SSR');
-  if(big && !S.firstGachaSR)S.firstGachaSR=true;
-  save();
-  showGacha(card);
+/* ----- gacha config ----- */
+var CEILING=20;                        /* 累計排出この枚数でSSR未排出なら次は確定 */
+var RARITY_ORDER=['SSR','SR','R','N']; /* 高→低（繰り下げ用） */
+var RARITY_RANK={SSR:4,SR:3,R:2,N:1};
+var FLAVORS={
+  N:['堅実な人材です。','コツコツ型の実務家。','現場を支える縁の下の力持ち。','まずは基礎から。安定の一手。'],
+  R:['見どころのある若手だ。','伸びしろ十分の有望株。','ひと味違うセンスを感じる。','将来のリーダー候補かも。'],
+  SR:['幹部候補の逸材！','各社が奪い合う実力者。','役員クラスの手腕を持つ。','面接官も思わず唸った。'],
+  SSR:['伝説の経営者が入社を志願してきた…！','業界を揺るがすカリスマ、電撃入社！','歴史を動かす一手。役員会が騒然！','この採用、後世に語り継がれる。']
+};
+function pickFlavor(r){var a=FLAVORS[r]||FLAVORS.N;return a[Math.floor(Math.random()*a.length)];}
+
+/* 現在の未所持プール（batch内で引いたidは drawnIds で除外） */
+function gachaAvailable(drawnIds){
+  return CARDS.filter(function(c){return !owns(c.id) && drawnIds.indexOf(c.id)<0;});
 }
-function showGacha(c){
-  var rc=rarClass(c.rarity);
-  var glow = (c.rarity==='SSR')?'🌈':(c.rarity==='SR')?'✨':(c.rarity==='R')?'💠':'⭐';
-  modal('<div class="modal"><h3 style="margin-bottom:2px">ガチャ！</h3>'+
-    '<p style="margin-bottom:2px">'+glow+' '+esc(c.rarity)+' カード '+glow+'</p>'+
-    '<div class="gacha-stage"><div class="flip"><div class="side back">❓</div>'+
-      '<div class="side front '+rc+'"><span class="fr">'+esc(c.rarity)+'</span>'+
+/* 1枚抽選。opts:{forceRarity,minRarity,pickup} 未所持がなければ null */
+function drawCard(drawnIds, opts){
+  opts=opts||{};
+  var avail=gachaAvailable(drawnIds);
+  if(avail.length===0)return null;
+  var byR={}; avail.forEach(function(c){(byR[c.rarity]=byR[c.rarity]||[]).push(c);});
+  var candidates=avail;
+  if(opts.forceRarity){
+    /* 指定レアから繰り下げて、在庫のある最上位レアを確定 */
+    var si=RARITY_ORDER.indexOf(opts.forceRarity), cr=null;
+    for(var a=si;a<RARITY_ORDER.length;a++){if(byR[RARITY_ORDER[a]]&&byR[RARITY_ORDER[a]].length){cr=RARITY_ORDER[a];break;}}
+    if(cr)candidates=byR[cr];
+  }else if(opts.minRarity){
+    /* minRarity 以上の在庫があればそこから */
+    var mi=RARITY_ORDER.indexOf(opts.minRarity), pool2=[];
+    for(var b=0;b<=mi;b++){if(byR[RARITY_ORDER[b]])pool2=pool2.concat(byR[RARITY_ORDER[b]]);}
+    if(pool2.length)candidates=pool2;
+  }
+  /* per-card weight（レア加重を維持しつつピックアップ業界を3倍） */
+  var totalW=0, weights=candidates.map(function(c){
+    var w=(RARITY_W[c.rarity]||1)/byR[c.rarity].length;
+    if(opts.pickup && c.industry===opts.pickup)w*=3;
+    totalW+=w; return w;
+  });
+  var roll=Math.random()*totalW, pick=candidates[0];
+  for(var k=0;k<candidates.length;k++){if(roll<weights[k]){pick=candidates[k];break;}roll-=weights[k];}
+  return pick;
+}
+/* countを引く。opts:{pickup,guaranteeRplus}。天井はここで消費・更新 */
+function drawBatch(count, opts){
+  opts=opts||{};
+  var drawnIds=[], results=[];
+  for(var i=0;i<count;i++){
+    var isLast=(i===count-1), dopts={pickup:opts.pickup};
+    var forcedSSR = S.gachaPity>=CEILING;
+    if(forcedSSR)dopts.forceRarity='SSR';
+    else if(opts.guaranteeRplus && isLast){
+      var hasR=results.some(function(r){return RARITY_RANK[r.rarity]>=RARITY_RANK.R;});
+      if(!hasR)dopts.minRarity='R';
+    }
+    var card=drawCard(drawnIds,dopts);
+    if(!card)break;
+    drawnIds.push(card.id);
+    results.push({card:card,rarity:card.rarity});
+    if(card.rarity==='SSR')S.gachaPity=0; else S.gachaPity++;
+  }
+  return results;
+}
+/* 引いた結果を所持へ反映＋バッジ判定＋保存 */
+function commitDraws(results){
+  results.forEach(function(r){if(!owns(r.card.id))S.ownedCards.push(r.card.id);});
+  if(results.some(function(r){return r.rarity==='SR'||r.rarity==='SSR';}) && !S.firstGachaSR)S.firstGachaSR=true;
+  save();
+  checkIndustryBadges();
+}
+function bestOf(results){
+  var b=results[0];
+  results.forEach(function(r){if(RARITY_RANK[r.rarity]>RARITY_RANK[b.rarity])b=r;});
+  return b;
+}
+/* 全所持時の変換（チケット1枚→100XP） */
+function gachaConvertComplete(){
+  S.tickets--; gainXP(100,'shacho'); save();
+  modal('<div class="modal"><div class="big">💯</div><h3>コンプリート済み！</h3>'+
+    '<p>全カード所持のため、チケットを100XPに変換しました。</p>'+
+    '<div class="btns"><button class="btn gold" onclick="APP.closeModal()">OK</button></div></div>');
+  render();
+}
+function launchConfetti(){
+  var wrap=document.createElement('div');wrap.className='confetti';
+  var colors=['#ff5f6d','#ffc371','#5eead4','#818cf8','#f472b6','#d4af37','#ffffff'];
+  var html='';
+  for(var i=0;i<44;i++){
+    var c=colors[i%colors.length], left=Math.random()*100, delay=Math.random()*0.7;
+    var dur=1.8+Math.random()*1.3, w=6+Math.random()*8;
+    html+='<i style="left:'+left+'%;background:'+c+';width:'+w.toFixed(1)+'px;height:'+(w*0.5).toFixed(1)+
+      'px;animation-delay:'+delay.toFixed(2)+'s;animation-duration:'+dur.toFixed(2)+'s;"></i>';
+  }
+  wrap.innerHTML=html;document.body.appendChild(wrap);
+  setTimeout(function(){if(wrap.parentNode)wrap.parentNode.removeChild(wrap);},3400);
+}
+
+/* ===== 採用面接ルーム（ガチャ入口） ===== */
+function openGacha(){
+  var total=CARDS.length, unowned=total-S.ownedCards.length;
+  var pityLeft=Math.max(0,CEILING-S.gachaPity);
+  var pityTxt=(pityLeft<=0)?'✨ 次の採用で SSR 確定！':'🏛️ SSR保証（天井）まであと '+pityLeft+' 枚';
+  var singleOk=S.tickets>=1, multiOk=S.tickets>=10, headOk=S.tickets>=2;
+  modal('<div class="modal wide gacha-room">'+
+    '<h3>🚪 採用面接ルーム</h3>'+
+    '<p class="muted">優秀な事例人材をスカウトしよう。<br>🎫 チケット '+S.tickets+' 枚 ／ 未採用 '+unowned+' 名</p>'+
+    '<div class="pity-bar">'+pityTxt+'</div>'+
+    gachaOpt('👤','単発採用','1','1名を採用。事例カードを1枚ゲット。','APP.gachaSingle()',!singleOk,'')+
+    gachaOpt('👥','10連採用','10','10名をまとめて採用。R以上1名を確定保証！','APP.gachaMulti()',!multiOk,'')+
+    gachaOpt('🎯','ヘッドハンティング','2','業界を指名し、その業界の未採用者を3倍の確率で狙い撃ち。','APP.gachaHeadMenu()',!headOk,'head')+
+    '<button class="btn ghost" style="margin-top:2px" onclick="APP.closeModal()">閉じる</button>'+
+    (S.tickets<1?'<p class="help" style="margin-top:8px">チケットは学習・挑戦で集まります。</p>':'')+
+  '</div>');
+}
+function gachaOpt(ic,title,cost,desc,api,disabled,cls){
+  return '<button class="gacha-opt '+(cls||'')+'"'+(disabled?' disabled':'')+' onclick="'+api+'">'+
+    '<span class="go-ic">'+ic+'</span>'+
+    '<span class="go-body"><span class="go-t">'+title+'</span><span class="go-d">'+desc+'</span></span>'+
+    '<span class="go-cost">🎫'+cost+'</span></button>';
+}
+
+/* ----- 単発採用 ----- */
+function gachaSingle(){
+  if(S.tickets<1){toast('チケットが足りません');return;}
+  if(S.ownedCards.length>=CARDS.length){gachaConvertComplete();return;}
+  S.tickets--;
+  var res=drawBatch(1,{});
+  commitDraws(res);
+  showGachaReveal(res[0],'single');
+}
+
+/* ----- ヘッドハンティング（業界ピックアップ） ----- */
+function gachaHeadMenu(){
+  if(S.tickets<2){toast('チケットが足りません（2枚必要）');return;}
+  var btns='';
+  INDUSTRIES.forEach(function(ind){
+    var cs=industryCards(ind.key);
+    var un=cs.filter(function(c){return !owns(c.id);}).length;
+    var dis=(un===0);
+    btns+='<button class="gacha-opt head"'+(dis?' disabled':'')+' onclick="APP.gachaHead(\''+ind.key+'\')">'+
+      '<span class="go-ic">'+ind.emo+'</span>'+
+      '<span class="go-body"><span class="go-t">'+esc(ind.name)+'</span>'+
+      '<span class="go-d">'+(dis?'未採用者なし（コンプ済 or 該当なし）':'未採用 '+un+' 名を3倍で狙う')+'</span></span>'+
+      '<span class="go-cost">'+(dis?'—':'🎫2')+'</span></button>';
+  });
+  modal('<div class="modal wide gacha-room">'+
+    '<h3>🎯 ヘッドハンティング</h3>'+
+    '<p class="muted">指名する業界を選択（🎫2枚）。<br>選んだ業界の未採用者が3倍の確率で登場します。</p>'+
+    '<div style="max-height:46vh;overflow-y:auto;margin-bottom:6px">'+btns+'</div>'+
+    '<button class="btn ghost" onclick="APP.openGacha()">‹ 戻る</button></div>');
+}
+function gachaHead(indKey){
+  if(S.tickets<2){toast('チケットが足りません（2枚必要）');return;}
+  var un=industryCards(indKey).filter(function(c){return !owns(c.id);});
+  if(un.length===0){toast('この業界は未採用者がいません');return;}
+  S.tickets-=2;
+  var res=drawBatch(1,{pickup:indKey});
+  commitDraws(res);
+  showGachaReveal(res[0],'head',indKey);
+}
+
+/* ----- 10連採用 ----- */
+function gachaMulti(){
+  if(S.tickets<10){toast('チケットが足りません（10枚必要）');return;}
+  if(S.ownedCards.length>=CARDS.length){gachaConvertComplete();return;}
+  var unowned=CARDS.length-S.ownedCards.length;
+  var drawCount=Math.min(10,unowned); /* 未所持が10未満なら引ける分だけ */
+  var res=drawBatch(drawCount,{guaranteeRplus:true});
+  S.tickets-=res.length;              /* 実際に引いた枚数だけ消費（残りは消費しない） */
+  commitDraws(res);
+  showGachaBatch(res);
+}
+
+/* ===== 演出：単発／ピックアップの1枚リビール ===== */
+function showGachaReveal(res,type,indKey){
+  if(!res)return;
+  var c=res.card, rc=rarClass(c.rarity)||'n', flavor=pickFlavor(c.rarity);
+  var head=(type==='head')?('🎯 '+industryEmo(indKey)+' '+esc(industryName(indKey))+' ピックアップ'):'👤 単発採用';
+  var again = (type==='head')?(S.tickets>=2?'APP.closeModal();APP.gachaHead(\''+indKey+'\')':'')
+                             :(S.tickets>=1?'APP.closeModal();APP.gachaSingle()':'');
+  var againLabel=(type==='head')?(S.tickets>=2?'もう1回 (🎫2)':''):(S.tickets>=1?'もう1回 (🎫1)':'');
+  modal('<div class="modal"><h3 style="margin-bottom:2px">'+head+'</h3>'+
+    '<p class="muted" style="margin:0 0 4px">封筒が震えている…</p>'+
+    '<div class="gacha-stage"><div class="aura '+rc+'"></div>'+
+      '<div class="flip fx"><div class="side back">✉️</div>'+
+      '<div class="side front '+rarClass(c.rarity)+'"><span class="fr">'+esc(c.rarity)+'</span>'+
       '<div style="font-size:26px;margin-top:4px">'+catEmoji(c.category)+'</div>'+
       '<div class="ft">'+esc(c.title)+'</div><div class="fc">'+esc(c.company||'')+'</div></div>'+
-    '</div></div>'+
+      '</div></div>'+
+    '<div class="flavor '+rarClass(c.rarity)+'">'+esc(flavor)+'</div>'+
     '<div class="btns"><button class="btn ghost" onclick="APP.closeModal()">閉じる</button>'+
-    '<button class="btn gold" onclick="APP.closeModal();'+(S.tickets>0?'APP.openGacha()':'')+'">'+(S.tickets>0?'もう1回 ('+S.tickets+')':'OK')+'</button></div></div>');
+    (againLabel?'<button class="btn gold" onclick="'+again+'">'+againLabel+'</button>':
+      '<button class="btn gold" onclick="APP.closeModal();APP.openGacha()">採用ルームへ</button>')+
+    '</div></div>');
+  if(c.rarity==='SSR'){setTimeout(launchConfetti,850);setTimeout(function(){toast('🎉 役員会が騒然！','gold');},900);}
+  render();
+}
+
+/* ===== 演出：10連の結果グリッド ===== */
+function showGachaBatch(results){
+  if(!results||!results.length){render();return;}
+  var best=bestOf(results), bc=best.card, brc=rarClass(bc.rarity);
+  var cells='';
+  results.forEach(function(r,i){
+    var rc=rarClass(r.card.rarity);
+    cells+='<div class="flip mini" style="animation-delay:'+(i*0.13).toFixed(2)+'s">'+
+      '<div class="side back">✉️</div>'+
+      '<div class="side front '+rc+'"><span class="fr">'+esc(r.rarity)+'</span>'+
+      '<div class="mi-e">'+catEmoji(r.card.category)+'</div>'+
+      '<div class="mi-t">'+esc(r.card.title)+'</div></div></div>';
+  });
+  var again=(S.tickets>=10)?'APP.closeModal();APP.gachaMulti()':'';
+  var againLabel=(S.tickets>=10)?'もう1回 (🎫10)':'';
+  var count=results.length;
+  modal('<div class="modal wide"><h3 style="margin-bottom:2px">👥 10連採用の結果</h3>'+
+    '<p class="muted" style="margin:0 0 6px">'+count+'名を採用！</p>'+
+    '<div class="spotlight">★ 今回の目玉 ★</div>'+
+    '<div class="gacha-stage" style="margin:2px 0 10px"><div class="aura '+(brc||'n')+'"></div>'+
+      '<div class="flip fx" style="width:120px;height:160px"><div class="side back">✉️</div>'+
+      '<div class="side front '+brc+'"><span class="fr">'+esc(bc.rarity)+'</span>'+
+      '<div style="font-size:24px;margin-top:4px">'+catEmoji(bc.category)+'</div>'+
+      '<div class="ft">'+esc(bc.title)+'</div><div class="fc">'+esc(bc.company||'')+'</div></div>'+
+      '</div></div>'+
+    '<div class="flavor '+brc+'" style="text-align:center">'+esc(pickFlavor(bc.rarity))+'</div>'+
+    '<div class="gacha-grid">'+cells+'</div>'+
+    '<div class="btns"><button class="btn ghost" onclick="APP.closeModal()">閉じる</button>'+
+    (againLabel?'<button class="btn gold" onclick="'+again+'">'+againLabel+'</button>':
+      '<button class="btn gold" onclick="APP.closeModal();APP.openGacha()">採用ルームへ</button>')+
+    '</div></div>');
+  if(best.rarity==='SSR'){setTimeout(launchConfetti,900);setTimeout(function(){toast('🎉 役員会が騒然！','gold');},950);}
   render();
 }
 
@@ -1155,7 +1890,7 @@ function viewSettings(){
     '<p class="help">すべての進捗（XP・カード・実績）を削除します。この操作は取り消せません。</p>'+
     '<button class="btn sm danger" onclick="APP.resetConfirm()">リセットする</button></div>';
 
-  html+='<p class="muted" style="text-align:center;font-size:11px;margin:16px 0 8px">経営者への道 ・ v1.0<br>データ: カード'+CARDS.length+' / ドリル'+DRILLS.length+' / ボス'+BOSSES.length+' / クエスト'+QUESTS.length+' / 取締役会'+BOARDS.length+'</p>';
+  html+='<p class="muted" style="text-align:center;font-size:11px;margin:16px 0 8px">経営者への道 ・ v2.0<br>データ: カード'+CARDS.length+' / ドリル'+DRILLS.length+' / ボス'+BOSSES.length+' / クエスト'+(QUESTS.length+CQUESTS.length)+' / 取締役会'+BOARDS.length+'<br>就活対策: ケース'+CASES.length+' / Webテスト'+SPI.length+' / 志望企業クエスト'+CQUESTS.length+'</p>';
   return html;
 }
 function updateName(){
@@ -1178,6 +1913,12 @@ function doImport(){
     S=Object.assign(defaultState(),p);
     S.deptXP=Object.assign({keiri:0,kikaku:0,marketing:0,jinji:0,shacho:0},p.deptXP||{});
     S.dailyDrill=Object.assign({date:'',count:0,bonus:false},p.dailyDrill||{});
+    S.casesWon=Array.isArray(p.casesWon)?p.casesWon:[];
+    S.spiHistory=(p.spiHistory&&typeof p.spiHistory==='object')?p.spiHistory:{};
+    S.spiGenreStats=(p.spiGenreStats&&typeof p.spiGenreStats==='object')?p.spiGenreStats:{};
+    S.dailySpi=Object.assign({date:'',bonus:false},p.dailySpi||{});
+    S.industryBadges=Array.isArray(p.industryBadges)?p.industryBadges:[];
+    S.gachaPity=(typeof p.gachaPity==='number'&&p.gachaPity>=0)?p.gachaPity:0;
     save();toast('インポート完了','gold');nav('home');
   }catch(e){toast('JSONの形式が正しくありません');}
 }
@@ -1215,7 +1956,14 @@ window.APP={
   judgeBoss:judgeBoss,
   toggleCheck:toggleCheck, completeQuest:completeQuest,
   submitBoard:submitBoard, setEval:setEval, completeBoard:completeBoard,
-  openGacha:openGacha,
+  openGacha:openGacha, dexFilter:dexFilter,
+  gachaSingle:gachaSingle, gachaMulti:gachaMulti,
+  gachaHeadMenu:gachaHeadMenu, gachaHead:gachaHead,
+  /* ケース面接 */
+  casePhase:casePhase, caseToAnswer:caseToAnswer, caseSubmit:caseSubmit,
+  caseNextFollowup:caseNextFollowup, setCaseEval:setCaseEval, caseWin:caseWin,
+  /* Webテスト */
+  startSpi:startSpi, answerSpi:answerSpi, spiTimeout:spiTimeout, nextSpi:nextSpi,
   updateName:updateName, copyExport:copyExport, doImport:doImport,
   resetConfirm:resetConfirm, resetConfirm2:resetConfirm2, doReset:doReset
 };
