@@ -1,0 +1,1237 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#14264d">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.json">
+<title>経営者への道</title>
+<style>
+:root{
+  --navy:#14264d; --navy2:#1e3566; --navy3:#2a4680;
+  --gold:#d4af37; --gold2:#f0c650; --gold-soft:#f7e7a8;
+  --bg:#eef2f8; --card:#ffffff; --ink:#1f2a44; --sub:#6b7891;
+  --line:#e2e8f2; --ok:#1a9e6c; --ng:#d64545;
+  --n:#9aa5b1; --r:#3b82f6; --sr:#d4af37;
+  --shadow:0 4px 16px rgba(20,38,77,.10);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{margin:0;padding:0;}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Noto Sans JP","Segoe UI",sans-serif;
+  background:var(--bg); color:var(--ink); line-height:1.55;
+  overscroll-behavior-y:none;
+}
+#app{max-width:520px;margin:0 auto;min-height:100vh;background:var(--bg);position:relative;padding-bottom:76px;}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;}
+input,textarea{font-family:inherit;font-size:16px;}
+h1,h2,h3,h4{margin:0;}
+.hidden{display:none !important;}
+
+/* ===== Top bar ===== */
+.topbar{
+  position:sticky;top:0;z-index:20;
+  background:linear-gradient(135deg,var(--navy),var(--navy2));
+  color:#fff;padding:14px 16px calc(14px + env(safe-area-inset-top,0));
+  padding-top:calc(14px + env(safe-area-inset-top,0));
+  display:flex;align-items:center;justify-content:space-between;
+  box-shadow:0 2px 10px rgba(20,38,77,.25);
+}
+.topbar .tb-title{font-size:17px;font-weight:800;letter-spacing:.02em;}
+.topbar .tb-sub{font-size:11px;color:var(--gold-soft);font-weight:600;}
+.tb-badge{background:rgba(255,255,255,.12);border:1px solid rgba(212,175,55,.5);
+  color:var(--gold2);font-weight:800;font-size:12px;padding:4px 10px;border-radius:999px;}
+
+/* ===== Screen ===== */
+.screen{padding:16px 16px 8px;animation:fade .25s ease;}
+@keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+
+.card{background:var(--card);border-radius:16px;padding:16px;box-shadow:var(--shadow);margin-bottom:14px;}
+.card h3{font-size:14px;color:var(--navy);margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.muted{color:var(--sub);font-size:13px;}
+.row{display:flex;align-items:center;gap:10px;}
+.spacer{flex:1;}
+
+/* ===== Home hero ===== */
+.hero{
+  background:linear-gradient(160deg,var(--navy),var(--navy2) 70%,var(--navy3));
+  color:#fff;border-radius:20px;padding:20px 18px;text-align:center;position:relative;overflow:hidden;
+  box-shadow:0 8px 24px rgba(20,38,77,.28);margin-bottom:14px;
+}
+.hero:before{content:"";position:absolute;inset:0;background:
+  radial-gradient(120px 120px at 85% 10%,rgba(212,175,55,.22),transparent 70%);}
+.hero .company-name{font-size:20px;font-weight:800;letter-spacing:.02em;position:relative;}
+.hero .stage-name{font-size:12px;color:var(--gold2);font-weight:700;margin-top:2px;position:relative;}
+.hero .building{font-size:64px;line-height:1;margin:10px 0 6px;position:relative;
+  filter:drop-shadow(0 6px 10px rgba(0,0,0,.3));animation:float 3.5s ease-in-out infinite;}
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-7px);}}
+.hero .rank-row{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;position:relative;margin-top:6px;}
+.chip{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.2);
+  border-radius:999px;padding:4px 12px;font-size:12px;font-weight:700;}
+.chip.gold{border-color:rgba(212,175,55,.6);color:var(--gold2);}
+.hero .xp-total{font-size:13px;margin-top:10px;position:relative;}
+.hero .xp-total b{color:var(--gold2);font-size:18px;}
+
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+.stat{background:var(--card);border-radius:14px;padding:12px;box-shadow:var(--shadow);}
+.stat .k{font-size:11px;color:var(--sub);font-weight:700;}
+.stat .v{font-size:16px;font-weight:800;color:var(--navy);margin-top:2px;}
+
+/* ===== Dept bars ===== */
+.dept{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+.dept:last-child{margin-bottom:0;}
+.dept .emo{font-size:26px;width:34px;text-align:center;flex:none;}
+.dept .body{flex:1;min-width:0;}
+.dept .top{display:flex;justify-content:space-between;font-size:12px;font-weight:700;}
+.dept .top .lv{color:var(--gold);}
+.bar{height:9px;background:var(--line);border-radius:99px;overflow:hidden;margin-top:5px;}
+.bar>span{display:block;height:100%;border-radius:99px;
+  background:linear-gradient(90deg,var(--gold),var(--gold2));transition:width .6s ease;}
+.dept .decor{font-size:12px;margin-top:2px;letter-spacing:2px;min-height:14px;}
+
+/* ===== mission ===== */
+.mission{display:flex;gap:10px;}
+.mission .m{flex:1;border:1.5px solid var(--line);border-radius:12px;padding:10px;text-align:center;}
+.mission .m.done{border-color:var(--ok);background:#eafaf3;}
+.mission .m .ic{font-size:22px;}
+.mission .m .t{font-size:12px;font-weight:700;margin-top:2px;}
+.mission .m .s{font-size:11px;color:var(--sub);}
+.mission .m.done .s{color:var(--ok);font-weight:700;}
+
+/* ===== buttons ===== */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  background:var(--navy);color:#fff;font-weight:800;font-size:15px;
+  padding:13px 18px;border-radius:13px;width:100%;box-shadow:var(--shadow);
+  transition:transform .08s ease,opacity .2s;}
+.btn:active{transform:scale(.97);}
+.btn.gold{background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy);}
+.btn.ghost{background:#fff;color:var(--navy);border:1.5px solid var(--line);box-shadow:none;}
+.btn.sm{width:auto;padding:9px 14px;font-size:13px;border-radius:10px;}
+.btn:disabled{opacity:.45;cursor:default;}
+.btn.danger{background:var(--ng);}
+
+/* ===== choices ===== */
+.choices{display:flex;flex-direction:column;gap:10px;margin-top:12px;}
+.choice{text-align:left;border:1.5px solid var(--line);background:#fff;border-radius:12px;
+  padding:13px 14px;font-size:14px;font-weight:600;transition:.15s;display:flex;gap:10px;align-items:flex-start;}
+.choice .lab{font-weight:800;color:var(--navy2);flex:none;}
+.choice:active{transform:scale(.99);}
+.choice.correct{border-color:var(--ok);background:#eafaf3;}
+.choice.wrong{border-color:var(--ng);background:#fdeaea;}
+.choice.dim{opacity:.5;}
+.explain{margin-top:12px;padding:12px;border-radius:12px;background:#f3f6fc;font-size:13px;border-left:4px solid var(--navy2);}
+.explain.ok{border-color:var(--ok);}
+.explain.ng{border-color:var(--ng);}
+.explain b{color:var(--navy);}
+
+/* ===== dept picker ===== */
+.dept-pick{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.dept-pick button{background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:14px 8px;
+  text-align:center;box-shadow:var(--shadow);}
+.dept-pick button .e{font-size:30px;}
+.dept-pick button .n{font-size:13px;font-weight:800;margin-top:4px;color:var(--navy);}
+.dept-pick button .lv{font-size:11px;color:var(--gold);font-weight:700;}
+
+/* ===== progress dots ===== */
+.qmeta{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--sub);font-weight:700;margin-bottom:8px;}
+.dots{display:flex;gap:4px;}
+.dots i{width:8px;height:8px;border-radius:99px;background:var(--line);}
+.dots i.on{background:var(--gold);}
+.dots i.now{background:var(--navy);}
+
+/* ===== list rows (bosses/quests) ===== */
+.lrow{display:flex;align-items:center;gap:12px;background:#fff;border-radius:14px;padding:13px 14px;
+  box-shadow:var(--shadow);margin-bottom:10px;width:100%;text-align:left;}
+.lrow .ic{font-size:24px;flex:none;}
+.lrow .body{flex:1;min-width:0;}
+.lrow .body .t{font-size:14px;font-weight:800;color:var(--navy);}
+.lrow .body .s{font-size:12px;color:var(--sub);}
+.lrow .done-mark{color:var(--ok);font-weight:800;font-size:13px;flex:none;}
+.stars{color:var(--gold);font-size:12px;letter-spacing:1px;}
+.sec-title{font-size:13px;font-weight:800;color:var(--navy);margin:18px 2px 8px;display:flex;align-items:center;gap:6px;}
+
+/* ===== detail ===== */
+.back{display:inline-flex;align-items:center;gap:4px;color:var(--navy2);font-weight:800;font-size:14px;margin-bottom:10px;}
+.qbox{background:var(--navy);color:#fff;border-radius:14px;padding:14px;font-size:14px;font-weight:600;margin-bottom:14px;line-height:1.6;}
+.step{border:1.5px solid var(--line);border-radius:12px;margin-bottom:10px;overflow:hidden;background:#fff;}
+.step summary{padding:11px 13px;font-weight:800;font-size:13px;color:var(--navy);cursor:pointer;list-style:none;display:flex;align-items:center;gap:6px;}
+.step summary::-webkit-details-marker{display:none;}
+.step[open] summary{border-bottom:1px solid var(--line);}
+.step .hint{padding:11px 13px;font-size:13px;color:var(--sub);background:#f7f9fd;}
+.field{width:100%;border:1.5px solid var(--line);border-radius:11px;padding:11px;font-size:15px;margin-top:6px;resize:vertical;min-height:64px;background:#fff;}
+.numfield{width:100%;border:1.5px solid var(--navy2);border-radius:11px;padding:12px;font-size:17px;font-weight:800;text-align:center;margin-top:8px;}
+.model{background:#f3f6fc;border-radius:12px;padding:14px;font-size:13px;margin-top:12px;border-left:4px solid var(--gold);}
+.model h4{font-size:13px;color:var(--navy);margin-bottom:6px;}
+.model ul{margin:6px 0;padding-left:18px;}
+.model .res{font-weight:800;color:var(--navy);font-size:15px;margin-top:6px;}
+.check{display:flex;align-items:flex-start;gap:10px;padding:11px 12px;border:1.5px solid var(--line);
+  border-radius:12px;margin-bottom:8px;background:#fff;font-size:13px;font-weight:600;}
+.check.on{border-color:var(--ok);background:#eafaf3;}
+.check .box{width:22px;height:22px;border-radius:6px;border:2px solid var(--sub);flex:none;
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:900;}
+.check.on .box{background:var(--ok);border-color:var(--ok);}
+.tag{display:inline-block;font-size:11px;font-weight:800;padding:2px 8px;border-radius:999px;
+  background:var(--navy2);color:#fff;margin-bottom:6px;}
+
+/* ===== dex ===== */
+.dexbar{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.dexbar .prog{flex:1;font-size:13px;font-weight:800;color:var(--navy);}
+.dexgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.dcard{aspect-ratio:3/4;border-radius:12px;padding:7px;position:relative;overflow:hidden;
+  display:flex;flex-direction:column;justify-content:flex-end;border:2px solid var(--n);background:#fff;box-shadow:var(--shadow);}
+.dcard.r{border-color:var(--r);}
+.dcard.sr{border-color:var(--sr);box-shadow:0 0 0 1px var(--sr),0 4px 12px rgba(212,175,55,.35);}
+.dcard.ssr{border-color:transparent;background:
+  linear-gradient(#fff,#fff) padding-box,
+  linear-gradient(135deg,#ff5f6d,#ffc371,#5eead4,#818cf8,#f472b6) border-box;
+  box-shadow:0 4px 14px rgba(129,140,248,.4);}
+.dcard .rr{position:absolute;top:5px;left:5px;font-size:9px;font-weight:900;padding:1px 5px;border-radius:5px;
+  background:var(--n);color:#fff;}
+.dcard.r .rr{background:var(--r);}
+.dcard.sr .rr{background:var(--sr);}
+.dcard.ssr .rr{background:linear-gradient(135deg,#ff5f6d,#818cf8);}
+.dcard .cco{font-size:9px;color:var(--sub);font-weight:700;}
+.dcard .cti{font-size:11px;font-weight:800;color:var(--navy);line-height:1.25;}
+.dcard.locked{background:#eef1f6;border-color:#dbe1ec !important;box-shadow:none;align-items:center;justify-content:center;}
+.dcard.locked .q{font-size:30px;color:#c2cadb;font-weight:900;}
+.dcard .catemo{position:absolute;top:4px;right:5px;font-size:14px;}
+
+/* ===== nav ===== */
+.nav{position:fixed;bottom:0;left:0;right:0;max-width:520px;margin:0 auto;
+  background:#fff;border-top:1px solid var(--line);display:flex;z-index:30;
+  padding-bottom:env(safe-area-inset-bottom,0);box-shadow:0 -2px 12px rgba(20,38,77,.06);}
+.nav button{flex:1;padding:8px 0 6px;text-align:center;color:var(--sub);font-size:10px;font-weight:700;}
+.nav button .ni{font-size:22px;display:block;line-height:1.1;filter:grayscale(.4);opacity:.75;}
+.nav button.on{color:var(--navy);}
+.nav button.on .ni{filter:none;opacity:1;transform:translateY(-1px);}
+
+/* ===== toast ===== */
+#toasts{position:fixed;left:0;right:0;bottom:88px;max-width:520px;margin:0 auto;z-index:60;
+  display:flex;flex-direction:column;align-items:center;gap:8px;pointer-events:none;padding:0 16px;}
+.toast{background:var(--navy);color:#fff;padding:11px 16px;border-radius:12px;font-size:13px;font-weight:700;
+  box-shadow:0 6px 18px rgba(20,38,77,.35);animation:tin .3s ease, tout .3s ease 2.2s forwards;max-width:100%;}
+.toast.gold{background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy);}
+.toast.levelup{background:linear-gradient(135deg,#1a9e6c,#2fd08c);}
+@keyframes tin{from{opacity:0;transform:translateY(14px) scale(.9);}to{opacity:1;transform:none;}}
+@keyframes tout{to{opacity:0;transform:translateY(-8px);}}
+
+/* ===== modal ===== */
+.overlay{position:fixed;inset:0;background:rgba(15,23,42,.6);z-index:70;display:flex;align-items:center;
+  justify-content:center;padding:24px;animation:fade .2s ease;}
+.modal{background:#fff;border-radius:20px;padding:22px;max-width:340px;width:100%;text-align:center;
+  box-shadow:0 20px 50px rgba(0,0,0,.35);animation:pop .35s cubic-bezier(.2,1.3,.4,1);}
+@keyframes pop{from{opacity:0;transform:scale(.85) translateY(10px);}to{opacity:1;transform:none;}}
+.modal h3{font-size:18px;color:var(--navy);margin-bottom:8px;}
+.modal p{font-size:14px;color:var(--sub);margin:0 0 16px;}
+.modal .big{font-size:52px;margin:6px 0;}
+.modal .btns{display:flex;gap:10px;margin-top:6px;}
+.modal .btns .btn{flex:1;}
+
+/* ===== gacha flip ===== */
+.gacha-stage{perspective:900px;display:flex;justify-content:center;margin:8px 0 18px;}
+.flip{width:150px;height:200px;position:relative;transform-style:preserve-3d;
+  animation:flip 1.1s cubic-bezier(.4,.1,.2,1) forwards;}
+@keyframes flip{0%{transform:rotateY(0);}55%{transform:rotateY(0);}100%{transform:rotateY(180deg);}}
+.flip .side{position:absolute;inset:0;backface-visibility:hidden;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;}
+.flip .back{background:linear-gradient(135deg,var(--navy),var(--navy3));border:2px solid var(--gold);
+  font-size:44px;color:var(--gold2);}
+.flip .front{transform:rotateY(180deg);flex-direction:column;padding:10px;text-align:center;
+  border:3px solid var(--n);background:#fff;}
+.flip .front.r{border-color:var(--r);}
+.flip .front.sr{border-color:var(--sr);box-shadow:0 0 22px rgba(212,175,55,.7);}
+.flip .front.ssr{border:none;background:linear-gradient(#fff,#fff) padding-box,
+  linear-gradient(135deg,#ff5f6d,#ffc371,#5eead4,#818cf8,#f472b6) border-box;
+  box-shadow:0 0 26px rgba(129,140,248,.75);border:3px solid transparent;}
+.flip .front .fr{font-size:11px;font-weight:900;color:#fff;background:var(--n);padding:2px 8px;border-radius:6px;}
+.flip .front.r .fr{background:var(--r);}
+.flip .front.sr .fr{background:var(--sr);}
+.flip .front.ssr .fr{background:linear-gradient(135deg,#ff5f6d,#818cf8);}
+.flip .front .ft{font-size:13px;font-weight:800;color:var(--navy);margin-top:8px;line-height:1.3;}
+.flip .front .fc{font-size:10px;color:var(--sub);margin-top:3px;}
+.shine{animation:shine 1.4s ease .9s infinite;}
+@keyframes shine{0%,100%{filter:brightness(1);}50%{filter:brightness(1.25);}}
+
+/* ===== error ===== */
+.errbox{margin:60px 16px;text-align:center;color:var(--sub);}
+.errbox .e{font-size:44px;}
+
+textarea.field:focus,input:focus{outline:none;border-color:var(--navy2);}
+.name-input{width:100%;border:1.5px solid var(--line);border-radius:11px;padding:12px;font-size:16px;margin-top:8px;}
+.help{font-size:12px;color:var(--sub);margin-top:6px;line-height:1.5;}
+.evalpick{display:flex;gap:8px;margin-top:10px;}
+.evalpick button{flex:1;border:1.5px solid var(--line);border-radius:11px;padding:12px 0;font-weight:800;background:#fff;color:var(--navy);}
+.evalpick button.on{background:var(--gold);border-color:var(--gold);color:var(--navy);}
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="topbar" id="topbar">
+    <div>
+      <div class="tb-title" id="tb-title">経営者への道</div>
+      <div class="tb-sub" id="tb-sub">経営スキル特訓</div>
+    </div>
+    <div class="tb-badge" id="tb-badge">🎫 0</div>
+  </div>
+  <div id="screen"></div>
+</div>
+<div class="nav" id="nav"></div>
+<div id="toasts"></div>
+<div id="modalRoot"></div>
+
+<script src="data/cards.js"></script>
+<script src="data/drills.js"></script>
+<script src="data/challenges.js"></script>
+<script>
+(function(){
+"use strict";
+
+/* =========================================================
+   DATA (with guards)
+   ========================================================= */
+var CARDS   = Array.isArray(window.DATA_CARDS)   ? window.DATA_CARDS   : [];
+var DRILLS  = Array.isArray(window.DATA_DRILLS)  ? window.DATA_DRILLS  : [];
+var BOSSES  = Array.isArray(window.DATA_BOSSES)  ? window.DATA_BOSSES  : [];
+var QUESTS  = Array.isArray(window.DATA_QUESTS)  ? window.DATA_QUESTS  : [];
+var BOARDS  = Array.isArray(window.DATA_BOARD)   ? window.DATA_BOARD   : [];
+var DATA_OK = CARDS.length>0 || DRILLS.length>0 || BOSSES.length>0;
+
+/* =========================================================
+   CONSTANTS
+   ========================================================= */
+var DEPTS = [
+  {key:'keiri',     name:'経理部',     emo:'💰'},
+  {key:'kikaku',    name:'経営企画部', emo:'📈'},
+  {key:'marketing', name:'マーケ部',   emo:'📣'},
+  {key:'jinji',     name:'人事部',     emo:'👥'},
+  {key:'shacho',    name:'社長室',     emo:'🧠'}
+];
+var DEPT_MAP={}; DEPTS.forEach(function(d){DEPT_MAP[d.key]=d;});
+var CAT_TO_DEPT={strategy:'kikaku', ma:'kikaku', marketing:'marketing', org:'jinji', failure:'shacho'};
+
+var STAGES=[
+  {min:0,     name:'個人事業主',   emo:'🏠'},
+  {min:500,   name:'スタートアップ',emo:'🏢'},
+  {min:2000,  name:'シード',       emo:'🏬'},
+  {min:6000,  name:'シリーズA',    emo:'🏦'},
+  {min:15000, name:'上場企業',     emo:'🏙️'},
+  {min:40000, name:'大企業',       emo:'🌆'}
+];
+var RATINGS=[
+  {min:30,name:'AAA'},{min:14,name:'AA'},{min:7,name:'A'},
+  {min:3,name:'BBB'},{min:1,name:'BB'},{min:0,name:'B'}
+];
+var RANKS=[
+  {name:'経営者', xp:45000, need:function(s){return countBoards(s)>=2;}},
+  {name:'役員',   xp:20000, need:function(s){return countBoards(s)>=1;}},
+  {name:'部長',   xp:8000,  need:function(s){return s.questsDone.length>=3;}},
+  {name:'課長',   xp:3000,  need:function(s){return s.bossWins.length>=3;}},
+  {name:'主任',   xp:800,   need:function(s){return true;}},
+  {name:'新入社員',xp:0,     need:function(s){return true;}}
+];
+function countBoards(s){return s.boardsDone.length;}
+
+var RARITY_W={N:60,R:28,SR:10,SSR:2};
+var CAT_EMOJI={strategy:'♟️',ma:'🤝',marketing:'📣',org:'👥',failure:'⚠️'};
+
+/* =========================================================
+   STATE
+   ========================================================= */
+var SAVE_KEY='ceoQuestSave';
+var S=null;
+
+function defaultState(){
+  return {
+    version:1,
+    companyName:'',
+    setupDone:false,
+    totalXP:0,
+    deptXP:{keiri:0,kikaku:0,marketing:0,jinji:0,shacho:0},
+    ownedCards:[],
+    tickets:0,
+    streak:0,
+    lastStudyDate:'',
+    bossWins:[],
+    questsDone:[],
+    boardsDone:[],
+    drillHistory:{},          /* {drillId:'YYYY-MM-DD'} last day awarded */
+    dailyCardDate:'',         /* last date the daily card quiz was answered */
+    dailyCardId:'',           /* the card obtained today */
+    dailyDrill:{date:'',count:0,bonus:false},
+    firstGachaSR:false,
+    createdAt:Date.now()
+  };
+}
+function load(){
+  try{
+    var raw=localStorage.getItem(SAVE_KEY);
+    if(!raw){S=defaultState();return;}
+    var p=JSON.parse(raw);
+    S=Object.assign(defaultState(),p);
+    S.deptXP=Object.assign({keiri:0,kikaku:0,marketing:0,jinji:0,shacho:0},p.deptXP||{});
+    S.dailyDrill=Object.assign({date:'',count:0,bonus:false},p.dailyDrill||{});
+  }catch(e){S=defaultState();}
+}
+function save(){try{localStorage.setItem(SAVE_KEY,JSON.stringify(S));}catch(e){}}
+
+/* =========================================================
+   DATE HELPERS (local time)
+   ========================================================= */
+function pad(n){return n<10?'0'+n:''+n;}
+function dstr(d){return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());}
+function todayStr(){return dstr(new Date());}
+function yesterdayStr(){var d=new Date();d.setDate(d.getDate()-1);return dstr(d);}
+function dateSeed(str){var h=0;for(var i=0;i<str.length;i++){h=(h*31+str.charCodeAt(i))>>>0;}return h;}
+
+/* =========================================================
+   DERIVED
+   ========================================================= */
+function deptLevel(xp){
+  var n=1;
+  while(xp>=50*n*(n+1)/2){n++;}
+  return n;
+}
+function deptProgress(xp){
+  var lv=deptLevel(xp);
+  var prev=(lv===1)?0:50*(lv-1)*lv/2;
+  var next=50*lv*(lv+1)/2;
+  return {lv:lv,prev:prev,next:next,pct:Math.max(0,Math.min(1,(xp-prev)/(next-prev)))};
+}
+function stageOf(xp){var s=STAGES[0];for(var i=0;i<STAGES.length;i++){if(xp>=STAGES[i].min)s=STAGES[i];}return s;}
+function nextStage(xp){for(var i=0;i<STAGES.length;i++){if(xp<STAGES[i].min)return STAGES[i];}return null;}
+function ratingOf(streak){for(var i=0;i<RATINGS.length;i++){if(streak>=RATINGS[i].min)return RATINGS[i].name;}return 'B';}
+function rankOf(s){
+  for(var i=0;i<RANKS.length;i++){
+    var r=RANKS[i];
+    if(s.totalXP>=r.xp && r.need(s))return r.name;
+  }
+  return '新入社員';
+}
+
+/* =========================================================
+   XP ENGINE
+   ========================================================= */
+function gainXP(amount, target){
+  amount=Math.round(amount);
+  if(amount<=0)return;
+  var before={};DEPTS.forEach(function(d){before[d.key]=deptLevel(S.deptXP[d.key]);});
+  if(target==='distribute'){
+    var sh=Math.round(amount*0.55);
+    S.deptXP.shacho+=sh;
+    var rest=amount-sh, per=Math.floor(rest/5);
+    DEPTS.forEach(function(d){S.deptXP[d.key]+=per;});
+    S.deptXP.shacho+=rest-per*5;
+  }else if(DEPT_MAP[target]){
+    S.deptXP[target]+=amount;
+  }else{
+    S.deptXP.shacho+=amount;
+  }
+  S.totalXP+=amount;
+  DEPTS.forEach(function(d){
+    var after=deptLevel(S.deptXP[d.key]);
+    if(after>before[d.key])toast(d.emo+' '+d.name+' Lv.'+after+' に昇格！','levelup');
+  });
+  save();
+}
+function touchStreak(){
+  var t=todayStr();
+  if(S.lastStudyDate===t)return;
+  if(S.lastStudyDate===yesterdayStr())S.streak+=1;
+  else S.streak=1;
+  S.lastStudyDate=t;
+  save();
+}
+
+/* =========================================================
+   TOAST / MODAL
+   ========================================================= */
+function toast(msg,cls){
+  var t=document.getElementById('toasts');
+  var el=document.createElement('div');
+  el.className='toast'+(cls?' '+cls:'');
+  el.textContent=msg;
+  t.appendChild(el);
+  setTimeout(function(){if(el.parentNode)el.parentNode.removeChild(el);},2600);
+}
+function modal(html){
+  var root=document.getElementById('modalRoot');
+  root.innerHTML='<div class="overlay">'+html+'</div>';
+}
+function closeModal(){document.getElementById('modalRoot').innerHTML='';}
+
+/* =========================================================
+   ROUTER / UI STATE
+   ========================================================= */
+var UI={screen:'home', sub:null, data:{}};
+function nav(scr){UI.screen=scr;UI.sub=null;UI.data={};render();window.scrollTo(0,0);}
+function go(sub,data){UI.sub=sub;UI.data=data||{};render();window.scrollTo(0,0);}
+
+function render(){
+  refreshTopbar();
+  refreshNav();
+  var host=document.getElementById('screen');
+  if(!DATA_OK){host.innerHTML=errorView();return;}
+  var html='';
+  switch(UI.screen){
+    case 'home':      html=viewHome(); break;
+    case 'daily':     html=viewDaily(); break;
+    case 'challenge': html=viewChallenge(); break;
+    case 'dex':       html=viewDex(); break;
+    case 'settings':  html=viewSettings(); break;
+    default:          html=viewHome();
+  }
+  host.innerHTML='<div class="screen">'+html+'</div>';
+  if(typeof UI._after==='function'){var f=UI._after;UI._after=null;f();}
+}
+function errorView(){
+  return '<div class="errbox"><div class="e">📦</div><h3>データ読込エラー</h3>'+
+    '<p class="muted">事例・ドリル・挑戦データ（data/*.js）が読み込めませんでした。<br>'+
+    'ファイルが揃っているかご確認ください。</p></div>';
+}
+
+function refreshTopbar(){
+  document.getElementById('tb-title').textContent = S.companyName || '経営者への道';
+  document.getElementById('tb-sub').textContent = rankOf(S)+' ・ '+stageOf(S.totalXP).name;
+  document.getElementById('tb-badge').textContent = '🎫 '+S.tickets;
+}
+function refreshNav(){
+  var items=[
+    {k:'home',i:'🏢',t:'ホーム'},
+    {k:'daily',i:'📚',t:'デイリー'},
+    {k:'challenge',i:'⚔️',t:'挑戦'},
+    {k:'dex',i:'🗂️',t:'図鑑'},
+    {k:'settings',i:'⚙️',t:'設定'}
+  ];
+  document.getElementById('nav').innerHTML=items.map(function(it){
+    return '<button class="'+(UI.screen===it.k?'on':'')+'" onclick="APP.nav(\''+it.k+'\')">'+
+      '<span class="ni">'+it.i+'</span>'+it.t+'</button>';
+  }).join('');
+}
+
+/* =========================================================
+   HELPERS
+   ========================================================= */
+function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function rarClass(r){return r==='SSR'?'ssr':r==='SR'?'sr':r==='R'?'r':'';}
+function owns(id){return S.ownedCards.indexOf(id)>=0;}
+
+/* =========================================================
+   HOME
+   ========================================================= */
+function viewHome(){
+  var st=stageOf(S.totalXP), ns=nextStage(S.totalXP);
+  var rank=rankOf(S), rating=ratingOf(S.streak);
+  var cardDone = S.dailyCardDate===todayStr();
+  var dd=S.dailyDrill;
+  var drillDone = dd.date===todayStr() && dd.bonus;
+  var drillCount = dd.date===todayStr()?dd.count:0;
+
+  var html='';
+  html+='<div class="hero">'+
+    '<div class="company-name">'+esc(S.companyName||'（社名未設定）')+'</div>'+
+    '<div class="stage-name">'+st.emo+' '+st.name+'</div>'+
+    '<div class="building">'+st.emo+'</div>'+
+    '<div class="rank-row">'+
+      '<span class="chip gold">👔 '+rank+'</span>'+
+      '<span class="chip">🔥 '+S.streak+'日</span>'+
+      '<span class="chip">格付 '+rating+'</span>'+
+    '</div>'+
+    '<div class="xp-total">総XP <b>'+S.totalXP.toLocaleString()+'</b>'+
+      (ns?' ／ 次のステージ「'+ns.name+'」まで '+(ns.min-S.totalXP).toLocaleString()+'XP':' ／ 最高ステージ達成！')+'</div>'+
+  '</div>';
+
+  html+='<div class="stat-grid">'+
+    stat('🎫 ガチャチケット', S.tickets+'枚')+
+    stat('📇 図鑑', S.ownedCards.length+' / '+CARDS.length)+
+    stat('⚔️ ボス撃破', S.bossWins.length+' / '+BOSSES.length)+
+    stat('🔬 クエスト', S.questsDone.length+' / '+QUESTS.length)+
+  '</div>';
+
+  html+='<div class="card"><h3>🏗️ スキルツリー（部門レベル）</h3>';
+  DEPTS.forEach(function(d){
+    var p=deptProgress(S.deptXP[d.key]);
+    var decor='';for(var i=0;i<Math.min(p.lv,10);i++)decor+=d.emo;
+    html+='<div class="dept"><div class="emo">'+d.emo+'</div><div class="body">'+
+      '<div class="top"><span>'+d.name+'</span><span class="lv">Lv.'+p.lv+'</span></div>'+
+      '<div class="bar"><span style="width:'+(p.pct*100).toFixed(0)+'%"></span></div>'+
+      '<div class="decor">'+decor+'</div>'+
+    '</div></div>';
+  });
+  html+='</div>';
+
+  html+='<div class="card"><h3>🎯 今日のミッション</h3><div class="mission">'+
+    '<div class="m'+(cardDone?' done':'')+'"><div class="ic">📇</div><div class="t">事例カード</div>'+
+      '<div class="s">'+(cardDone?'完了 ✓':'未達成')+'</div></div>'+
+    '<div class="m'+(drillDone?' done':'')+'"><div class="ic">📝</div><div class="t">ドリル10問</div>'+
+      '<div class="s">'+(drillDone?'完了 ✓':drillCount+' / 10問')+'</div></div>'+
+  '</div>'+
+  '<button class="btn gold" style="margin-top:12px" onclick="APP.nav(\'daily\')">今日の学習へ →</button>'+
+  '</div>';
+
+  if(!S.setupDone){
+    UI._after=function(){promptCompanyName(true);};
+  }
+  return html;
+}
+function stat(k,v){return '<div class="stat"><div class="k">'+k+'</div><div class="v">'+v+'</div></div>';}
+
+function promptCompanyName(first){
+  modal('<div class="modal"><div class="big">🏢</div>'+
+    '<h3>会社を設立しよう</h3>'+
+    '<p>あなたの仮想会社の名前を決めてください。</p>'+
+    '<input class="name-input" id="cn" maxlength="20" placeholder="例：ハル・ホールディングス" value="'+esc(S.companyName)+'">'+
+    '<div class="btns"><button class="btn gold" onclick="APP.saveName()">設立する</button></div>'+
+    '</div>');
+  setTimeout(function(){var el=document.getElementById('cn');if(el)el.focus();},100);
+}
+function saveName(){
+  var el=document.getElementById('cn');
+  var v=(el?el.value:'').trim();
+  if(!v){toast('社名を入力してください');return;}
+  S.companyName=v; S.setupDone=true; save();
+  closeModal(); toast('🏢 '+v+' 設立！','gold'); render();
+}
+
+/* =========================================================
+   DAILY
+   ========================================================= */
+function viewDaily(){
+  if(UI.sub==='card') return viewDailyCard();
+  if(UI.sub==='drillPick') return viewDrillPick();
+  if(UI.sub==='drill') return viewDrillSession();
+
+  var cardDone=S.dailyCardDate===todayStr();
+  var dd=S.dailyDrill; var cnt=dd.date===todayStr()?dd.count:0; var bonus=dd.date===todayStr()&&dd.bonus;
+  var html='<h2 style="font-size:20px;color:var(--navy);margin-bottom:14px;">📚 デイリー学習</h2>';
+
+  html+='<button class="lrow" onclick="APP.go(\'card\')">'+
+    '<div class="ic">📇</div><div class="body"><div class="t">今日の事例カード</div>'+
+    '<div class="s">'+(cardDone?'獲得済み ✓ （復習できます）':'名経営の事例を1枚学ぶ（+30XP・カード獲得）')+'</div></div>'+
+    (cardDone?'<div class="done-mark">✓</div>':'<div style="font-size:20px;color:var(--gold)">›</div>')+
+  '</button>';
+
+  html+='<div class="sec-title">📝 部門ドリル</div>';
+  html+='<p class="muted" style="margin:0 0 10px 2px">部門を選んで10問チャレンジ。10問クリアで +50XP とチケット1枚。'+
+    '<br>今日の進捗：<b>'+cnt+' / 10問</b>'+(bonus?'（ボーナス獲得済 ✓）':'')+'</p>';
+  html+='<div class="dept-pick">';
+  DEPTS.forEach(function(d){
+    var n=DRILLS.filter(function(x){return x.dept===d.key;}).length;
+    var p=deptProgress(S.deptXP[d.key]);
+    html+='<button onclick="APP.startDrill(\''+d.key+'\')"'+(n===0?' disabled':'')+'>'+
+      '<div class="e">'+d.emo+'</div><div class="n">'+d.name+'</div>'+
+      '<div class="lv">Lv.'+p.lv+' ・ '+n+'問</div></button>';
+  });
+  html+='</div>';
+  return html;
+}
+
+/* ----- daily card ----- */
+function pickDailyCard(){
+  if(S.dailyCardDate===todayStr() && S.dailyCardId){
+    var c=CARDS.filter(function(x){return x.id===S.dailyCardId;})[0];
+    if(c)return c;
+  }
+  var pool=CARDS.filter(function(c){return !owns(c.id);});
+  if(pool.length===0)pool=CARDS.slice();
+  pool.sort(function(a,b){return String(a.id)<String(b.id)?-1:1;});
+  var idx=dateSeed(todayStr())%pool.length;
+  return pool[idx];
+}
+function viewDailyCard(){
+  var c=pickDailyCard();
+  if(!c)return backBtn('daily')+'<p class="muted">カードデータがありません。</p>';
+  var answered=S.dailyCardDate===todayStr();
+  var d=UI.data||{};
+  var html=backBtn('daily');
+  html+='<div class="card">';
+  html+='<span class="tag">'+(c.company?esc(c.company):'事例')+(c.year?' ・ '+esc(c.year):'')+'</span>';
+  html+='<h2 style="font-size:18px;color:var(--navy);margin:2px 0 4px">'+esc(c.title)+'</h2>';
+  html+='<div class="muted" style="font-size:12px;margin-bottom:8px">'+catEmoji(c.category)+' '+catName(c.category)+' ・ レア度 '+esc(c.rarity)+'</div>';
+  html+='<p style="font-size:14px">'+esc(c.summary)+'</p>';
+  html+='</div>';
+
+  if(!c.quiz){
+    html+='<button class="btn gold" onclick="APP.claimCard(\''+c.id+'\')">このカードを獲得</button>';
+    return html;
+  }
+
+  html+='<div class="card"><h3>🧠 理解度クイズ</h3><p style="font-weight:700">'+esc(c.quiz.q)+'</p>';
+  html+='<div class="choices">';
+  (c.quiz.choices||[]).forEach(function(ch,i){
+    var cls='choice';
+    if(d.picked!=null){
+      if(i===c.quiz.answer)cls+=' correct';
+      else if(i===d.picked)cls+=' wrong';
+      else cls+=' dim';
+    }
+    html+='<button class="'+cls+'"'+(d.picked!=null?' disabled':'')+' onclick="APP.answerCard('+i+')">'+
+      '<span class="lab">'+String.fromCharCode(65+i)+'</span><span>'+esc(ch)+'</span></button>';
+  });
+  html+='</div>';
+  if(d.picked!=null){
+    var ok=d.picked===c.quiz.answer;
+    html+='<div class="explain '+(ok?'ok':'ng')+'"><b>'+(ok?'正解！ +30XP':'残念…')+'</b><br>'+esc(c.quiz.explanation||'')+'</div>';
+    if(c.insight)html+='<div class="explain" style="border-color:var(--gold)"><b>💡 学びのポイント</b><br>'+esc(c.insight)+'</div>';
+    if(answered){
+      html+='<div style="margin-top:14px" class="muted">今日のカードは獲得済みです。明日また新しい事例が登場します。</div>';
+      html+='<button class="btn ghost" style="margin-top:10px" onclick="APP.nav(\'dex\')">図鑑を見る</button>';
+    }
+  }
+  return html;
+}
+function answerCard(i){
+  var c=pickDailyCard();
+  UI.data={picked:i};
+  if(S.dailyCardDate!==todayStr()){
+    touchStreak();
+    var correct = c.quiz && i===c.quiz.answer;
+    if(!owns(c.id))S.ownedCards.push(c.id);
+    S.dailyCardId=c.id; S.dailyCardDate=todayStr(); save();
+    if(correct){gainXP(30, CAT_TO_DEPT[c.category]||'shacho');toast('🎉 正解！ +30XP','gold');}
+    else{toast('カードは獲得しました');}
+    showCardObtained(c);
+  }
+  render();
+}
+function claimCard(id){
+  var c=CARDS.filter(function(x){return x.id===id;})[0];
+  if(!c)return;
+  if(S.dailyCardDate!==todayStr()){
+    touchStreak();
+    if(!owns(c.id))S.ownedCards.push(c.id);
+    S.dailyCardId=c.id;S.dailyCardDate=todayStr();save();
+    showCardObtained(c);
+  }
+  render();
+}
+function showCardObtained(c){
+  var rc=rarClass(c.rarity);
+  modal('<div class="modal"><div class="big">📇✨</div>'+
+    '<h3>カード獲得！</h3>'+
+    '<div class="dcard '+rc+'" style="width:120px;height:160px;margin:8px auto;">'+
+      '<span class="rr">'+esc(c.rarity)+'</span>'+
+      '<span class="catemo">'+catEmoji(c.category)+'</span>'+
+      '<div class="cco">'+esc(c.company||'')+'</div>'+
+      '<div class="cti">'+esc(c.title)+'</div></div>'+
+    '<div class="btns"><button class="btn gold" onclick="APP.closeModal()">受け取る</button></div>'+
+  '</div>');
+}
+function catName(c){return {strategy:'戦略',ma:'M&A',marketing:'マーケティング',org:'組織',failure:'失敗学'}[c]||'事例';}
+function catEmoji(c){return CAT_EMOJI[c]||'📘';}
+
+/* ----- drill ----- */
+function startDrill(dept){
+  var pool=DRILLS.filter(function(x){return x.dept===dept;});
+  if(pool.length===0){toast('この部門のドリルがありません');return;}
+  var deptLv=deptLevel(S.deptXP[dept]);
+  var band=Math.min(3,Math.max(1,Math.ceil(deptLv/2)));
+  var scored=pool.map(function(q){
+    return {q:q, w:Math.abs((q.level||1)-band)+Math.random()};
+  }).sort(function(a,b){return a.w-b.w;});
+  var picked=scored.slice(0,Math.min(10,scored.length)).map(function(x){return x.q;});
+  for(var i=picked.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=picked[i];picked[i]=picked[j];picked[j]=t;}
+  UI.sub='drill';
+  UI.data={dept:dept, list:picked, idx:0, picked:null, correct:0};
+  render();window.scrollTo(0,0);
+}
+function viewDrillSession(){
+  var d=UI.data; var q=d.list[d.idx];
+  var dep=DEPT_MAP[d.dept];
+  var html=backBtn('daily');
+  html+='<div class="qmeta"><span>'+dep.emo+' '+dep.name+' ドリル</span><span>正解 '+d.correct+'</span></div>';
+  html+='<div class="dots" style="margin-bottom:12px">';
+  for(var i=0;i<d.list.length;i++){html+='<i class="'+(i<d.idx?'on':i===d.idx?'now':'')+'"></i>';}
+  html+='</div>';
+  html+='<div class="card"><div class="muted" style="font-size:11px;margin-bottom:4px">第'+(d.idx+1)+'問 ・ Lv.'+(q.level||1)+' ・ +'+(10*(q.level||1))+'XP</div>';
+  html+='<p style="font-weight:700;font-size:15px">'+esc(q.q)+'</p>';
+  html+='<div class="choices">';
+  (q.choices||[]).forEach(function(ch,i){
+    var cls='choice';
+    if(d.picked!=null){
+      if(i===q.answer)cls+=' correct';
+      else if(i===d.picked)cls+=' wrong';
+      else cls+=' dim';
+    }
+    html+='<button class="'+cls+'"'+(d.picked!=null?' disabled':'')+' onclick="APP.answerDrill('+i+')">'+
+      '<span class="lab">'+String.fromCharCode(65+i)+'</span><span>'+esc(ch)+'</span></button>';
+  });
+  html+='</div>';
+  if(d.picked!=null){
+    var ok=d.picked===q.answer;
+    html+='<div class="explain '+(ok?'ok':'ng')+'"><b>'+(ok?'正解！':'不正解')+'</b><br>'+esc(q.explanation||'')+'</div>';
+    var last=d.idx>=d.list.length-1;
+    html+='<button class="btn'+(last?' gold':'')+'" style="margin-top:12px" onclick="APP.nextDrill()">'+(last?'結果を見る':'次の問題 →')+'</button>';
+  }
+  html+='</div>';
+  return html;
+}
+function answerDrill(i){
+  var d=UI.data; if(d.picked!=null)return;
+  var q=d.list[d.idx];
+  d.picked=i;
+  touchStreak();
+  if(i===q.answer){
+    d.correct++;
+    if(S.drillHistory[q.id]!==todayStr()){
+      S.drillHistory[q.id]=todayStr();
+      gainXP(10*(q.level||1), d.dept);
+      toast('+'+(10*(q.level||1))+'XP','gold');
+    }else{
+      toast('正解（本日XP獲得済）');
+    }
+  }
+  save();render();
+}
+function nextDrill(){
+  var d=UI.data;
+  /* count this drill toward daily 10 */
+  if(S.dailyDrill.date!==todayStr())S.dailyDrill={date:todayStr(),count:0,bonus:false};
+  S.dailyDrill.count++;
+  if(S.dailyDrill.count>=10 && !S.dailyDrill.bonus){
+    S.dailyDrill.bonus=true;
+    S.tickets++;
+    gainXP(50,d.dept);
+    save();
+    modal('<div class="modal"><div class="big">🎊</div><h3>デイリー10問クリア！</h3>'+
+      '<p>+50XP とガチャチケット1枚を獲得しました。</p>'+
+      '<div class="btns"><button class="btn gold" onclick="APP.closeModal()">やった！</button></div></div>');
+  }
+  save();
+  if(d.idx>=d.list.length-1){
+    UI.sub=null;
+    render();
+    showDrillResult(d);
+  }else{
+    d.idx++; d.picked=null; render(); window.scrollTo(0,0);
+  }
+}
+function showDrillResult(d){
+  modal('<div class="modal"><div class="big">'+(d.correct>=8?'🏆':d.correct>=5?'👍':'💪')+'</div>'+
+    '<h3>ドリル終了</h3><p>'+d.list.length+'問中 <b style="color:var(--navy);font-size:18px">'+d.correct+'</b> 問正解！</p>'+
+    '<div class="btns"><button class="btn ghost" onclick="APP.closeModal()">閉じる</button>'+
+    '<button class="btn gold" onclick="APP.closeModal();APP.go(\'drillPick\')">もう1部門</button></div></div>');
+}
+
+/* =========================================================
+   CHALLENGE
+   ========================================================= */
+function viewChallenge(){
+  if(UI.sub==='boss')  return viewBoss();
+  if(UI.sub==='quest') return viewQuest();
+  if(UI.sub==='board') return viewBoard();
+
+  var html='<h2 style="font-size:20px;color:var(--navy);margin-bottom:6px">⚔️ 挑戦</h2>';
+  html+='<p class="muted" style="margin:0 0 12px 2px">実務レベルの課題で経営思考を鍛える。</p>';
+
+  html+='<div class="sec-title">👹 ボス戦（フェルミ推定・意思決定）</div>';
+  if(BOSSES.length===0)html+='<p class="muted">データ準備中</p>';
+  BOSSES.forEach(function(b){
+    var won=S.bossWins.indexOf(b.id)>=0;
+    html+='<button class="lrow" onclick="APP.go(\'boss\',{id:\''+b.id+'\'})">'+
+      '<div class="ic">'+(won?'🏆':'👹')+'</div><div class="body">'+
+      '<div class="t">'+esc(b.title)+'</div><div class="s"><span class="stars">'+stars(b.difficulty)+'</span> ・ +'+(b.xp||0)+'XP</div></div>'+
+      (won?'<div class="done-mark">撃破 ✓</div>':'<div style="font-size:20px;color:var(--gold)">›</div>')+'</button>';
+  });
+
+  html+='<div class="sec-title">🔬 リサーチクエスト</div>';
+  if(QUESTS.length===0)html+='<p class="muted">データ準備中</p>';
+  QUESTS.forEach(function(q){
+    var done=S.questsDone.indexOf(q.id)>=0;
+    html+='<button class="lrow" onclick="APP.go(\'quest\',{id:\''+q.id+'\'})">'+
+      '<div class="ic">'+(done?'✅':'🔬')+'</div><div class="body">'+
+      '<div class="t">'+esc(q.title)+'</div><div class="s">+'+(q.xp||0)+'XP ・ チケット1枚</div></div>'+
+      (done?'<div class="done-mark">完了 ✓</div>':'<div style="font-size:20px;color:var(--gold)">›</div>')+'</button>';
+  });
+
+  html+='<div class="sec-title">🏛️ 取締役会</div>';
+  if(BOARDS.length===0)html+='<p class="muted">データ準備中</p>';
+  BOARDS.forEach(function(b){
+    var done=S.boardsDone.indexOf(b.id)>=0;
+    html+='<button class="lrow" onclick="APP.go(\'board\',{id:\''+b.id+'\'})">'+
+      '<div class="ic">'+(done?'🎖️':'🏛️')+'</div><div class="body">'+
+      '<div class="t">'+esc(b.title)+'</div><div class="s">'+esc(b.company||'')+' ・ +'+(b.xp||0)+'XP ・ チケット3枚</div></div>'+
+      (done?'<div class="done-mark">完了 ✓</div>':'<div style="font-size:20px;color:var(--gold)">›</div>')+'</button>';
+  });
+  return html;
+}
+function stars(n){n=n||1;var s='';for(var i=0;i<3;i++)s+=(i<n?'★':'☆');return s;}
+
+/* ----- boss ----- */
+function viewBoss(){
+  var b=BOSSES.filter(function(x){return x.id===UI.data.id;})[0];
+  if(!b)return backBtn('challenge')+'<p class="muted">ボスが見つかりません。</p>';
+  var d=UI.data; var won=S.bossWins.indexOf(b.id)>=0;
+  var html=backBtn('challenge');
+  html+='<span class="tag">👹 ボス戦 '+stars(b.difficulty)+'</span>';
+  html+='<h2 style="font-size:18px;color:var(--navy);margin:2px 0 10px">'+esc(b.title)+'</h2>';
+  html+='<div class="qbox">'+esc(b.question)+'</div>';
+
+  html+='<div class="sec-title">🧭 思考ステップ（ヒントは開いて確認）</div>';
+  (b.steps||[]).forEach(function(s,i){
+    html+='<details class="step"><summary>ステップ'+(i+1)+'：'+esc(s.name)+'</summary>'+
+      '<div class="hint">💡 '+esc(s.hint)+'</div>'+
+      '<div style="padding:0 13px 12px"><textarea class="field" placeholder="自分の考え・数字をメモ…" id="bmemo'+i+'">'+esc((d.memo&&d.memo[i])||'')+'</textarea></div>'+
+      '</details>';
+  });
+
+  html+='<div class="card" style="margin-top:14px"><h3>🎯 最終回答（数値）</h3>';
+  html+='<input class="numfield" type="number" inputmode="decimal" id="bans" placeholder="推定した数値を入力" '+
+    (d.result!=null?'value="'+esc(d.result)+'" disabled':'')+'>';
+  if(b.model&&b.model.range)html+='<p class="help">許容レンジ内で正解。単位に注意して概算値を入れてください。</p>';
+  if(d.result==null){
+    html+='<button class="btn gold" style="margin-top:12px" onclick="APP.judgeBoss(\''+b.id+'\')">判定する</button>';
+  }
+  html+='</div>';
+
+  if(d.result!=null && b.model){
+    var m=b.model;
+    html+='<div class="explain '+(d.win?'ok':'ng')+'"><b>'+(d.win?'撃破成功！':'レンジ外… 惜しい')+'</b> あなたの回答：'+esc(d.result)+
+      (m.range?'（許容 '+m.range[0]+'〜'+m.range[1]+'）':'')+'</div>';
+    html+='<div class="model"><h4>📐 模範モデル</h4>';
+    if(m.assumptions&&m.assumptions.length){html+='<div><b>前提：</b><ul>';m.assumptions.forEach(function(a){html+='<li>'+esc(a)+'</li>';});html+='</ul></div>';}
+    if(m.calculation)html+='<div><b>計算：</b><br>'+esc(m.calculation)+'</div>';
+    if(m.result!=null)html+='<div class="res">結論：'+esc(m.result)+'</div>';
+    html+='</div>';
+    html+='<p class="help">自分のメモと模範モデルの前提・数字の置き方を見比べてみましょう。</p>';
+  }
+  return html;
+}
+function judgeBoss(id){
+  var b=BOSSES.filter(function(x){return x.id===id;})[0]; if(!b)return;
+  var el=document.getElementById('bans');
+  if(!el||el.value===''){toast('数値を入力してください');return;}
+  var val=parseFloat(el.value);
+  var memo=[];(b.steps||[]).forEach(function(s,i){var m=document.getElementById('bmemo'+i);memo[i]=m?m.value:'';});
+  var win=false;
+  if(b.model&&b.model.range){win = val>=b.model.range[0] && val<=b.model.range[1];}
+  else{win=true;}
+  UI.data={id:id, result:el.value, win:win, memo:memo};
+  var first=S.bossWins.indexOf(id)<0;
+  if(win){
+    touchStreak();
+    if(first){
+      S.bossWins.push(id);
+      S.tickets+=2;
+      gainXP(b.xp||100,'distribute');
+      save();
+      showBossWin(b, first);
+    }else{toast('🏆 再撃破！','gold');}
+  }else{
+    toast('レンジ外。模範モデルを確認して再挑戦');
+  }
+  save();render();
+}
+function showBossWin(b, first){
+  modal('<div class="modal"><div class="big shine">🏆</div>'+
+    '<h3>ボス撃破！</h3>'+
+    '<p>'+esc(b.title)+' をクリア！<br>+'+(b.xp||100)+'XP ／ 🎫 チケット2枚'+(first?'<br><b>初撃破ボーナス！</b>':'')+'</p>'+
+    '<div class="btns"><button class="btn gold" onclick="APP.closeModal()">勝利！</button></div></div>');
+}
+
+/* ----- quest ----- */
+function viewQuest(){
+  var q=QUESTS.filter(function(x){return x.id===UI.data.id;})[0];
+  if(!q)return backBtn('challenge')+'<p class="muted">クエストが見つかりません。</p>';
+  var done=S.questsDone.indexOf(q.id)>=0;
+  var checks=UI.data.checks || (done?[true,true,true,true,true]:[false,false,false,false,false]);
+  UI.data.checks=checks;
+  var html=backBtn('challenge');
+  html+='<span class="tag">🔬 リサーチクエスト</span>';
+  html+='<h2 style="font-size:18px;color:var(--navy);margin:2px 0 10px">'+esc(q.title)+'</h2>';
+  html+='<div class="qbox">'+esc(q.mission)+'</div>';
+  if(q.guide&&q.guide.length){
+    html+='<div class="card"><h3>🧭 進め方</h3><ol style="margin:0;padding-left:18px;font-size:13px">';
+    q.guide.forEach(function(g){html+='<li style="margin-bottom:4px">'+esc(g)+'</li>';});
+    html+='</ol></div>';
+  }
+  if(q.sources&&q.sources.length){
+    html+='<div class="card"><h3>📚 調べどころ</h3><ul style="margin:0;padding-left:18px;font-size:13px">';
+    q.sources.forEach(function(s){html+='<li style="margin-bottom:4px">'+esc(s)+'</li>';});
+    html+='</ul></div>';
+  }
+  html+='<div class="sec-title">✅ 自己チェック（5項目すべてで完了）</div>';
+  (q.checklist||[]).forEach(function(c,i){
+    html+='<button class="check'+(checks[i]?' on':'')+'" onclick="APP.toggleCheck('+i+')" style="width:100%">'+
+      '<span class="box">'+(checks[i]?'✓':'')+'</span><span>'+esc(c)+'</span></button>';
+  });
+  if(!done){
+    var all=checks.length>0 && checks.every(function(x){return x;});
+    html+='<button class="btn gold" style="margin-top:10px" '+(all?'':'disabled')+' onclick="APP.completeQuest(\''+q.id+'\')">クエスト完了にする</button>';
+  }else{
+    html+='<div class="explain ok" style="margin-top:10px"><b>完了済み ✓</b> このクエストはクリア済みです。</div>';
+  }
+  return html;
+}
+function toggleCheck(i){
+  UI.data.checks[i]=!UI.data.checks[i];
+  render();
+}
+function completeQuest(id){
+  var q=QUESTS.filter(function(x){return x.id===id;})[0]; if(!q)return;
+  if(S.questsDone.indexOf(id)>=0)return;
+  touchStreak();
+  S.questsDone.push(id);
+  S.tickets+=1;
+  gainXP(q.xp||150,'distribute');
+  save();
+  modal('<div class="modal"><div class="big shine">🎖️</div><h3>クエスト完了！</h3>'+
+    '<p>+'+(q.xp||150)+'XP ／ 🎫 チケット1枚</p>'+
+    '<div class="btns"><button class="btn gold" onclick="APP.closeModal();APP.go(null)">戻る</button></div></div>');
+}
+
+/* ----- board ----- */
+function viewBoard(){
+  var b=BOARDS.filter(function(x){return x.id===UI.data.id;})[0];
+  if(!b)return backBtn('challenge')+'<p class="muted">取締役会が見つかりません。</p>';
+  var d=UI.data; var done=S.boardsDone.indexOf(b.id)>=0;
+  var html=backBtn('challenge');
+  html+='<span class="tag">🏛️ 取締役会</span>';
+  html+='<h2 style="font-size:18px;color:var(--navy);margin:2px 0 4px">'+esc(b.title)+'</h2>';
+  html+='<div class="muted" style="font-size:12px;margin-bottom:8px">'+esc(b.company||'')+'</div>';
+  html+='<div class="qbox">'+esc(b.scenario)+'</div>';
+
+  html+='<div class="sec-title">📝 論点への回答</div>';
+  (b.tasks||[]).forEach(function(t,i){
+    html+='<div class="card"><div style="font-weight:800;font-size:13px;color:var(--navy);margin-bottom:4px">'+
+      '論点'+(i+1)+(t.type?'（'+esc(t.type)+'）':'')+'</div>'+
+      '<p style="font-size:14px;margin:0 0 4px">'+esc(t.prompt)+'</p>'+
+      '<textarea class="field" id="btask'+i+'" placeholder="あなたの提案・根拠を記述…"'+(d.submitted?' disabled':'')+'>'+esc((d.answers&&d.answers[i])||'')+'</textarea></div>';
+  });
+
+  if(!d.submitted && !done){
+    html+='<button class="btn gold" onclick="APP.submitBoard(\''+b.id+'\')">提出して模範解答を見る</button>';
+  }
+
+  if(d.submitted || done){
+    if(b.model){
+      html+='<div class="model"><h4>🏛️ 模範解答・意思決定モデル</h4>';
+      if(typeof b.model==='string')html+='<div>'+esc(b.model)+'</div>';
+      else{
+        if(b.model.assumptions){html+='<div><b>前提：</b><ul>';b.model.assumptions.forEach(function(a){html+='<li>'+esc(a)+'</li>';});html+='</ul></div>';}
+        if(b.model.calculation)html+='<div><b>分析：</b><br>'+esc(b.model.calculation)+'</div>';
+        if(b.model.result!=null)html+='<div class="res">意思決定：'+esc(b.model.result)+'</div>';
+      }
+      html+='</div>';
+    }
+    if(!done){
+      html+='<div class="sec-title">🧑‍⚖️ 自己評価</div>';
+      html+='<p class="help">模範解答と見比べ、自分の回答を評価してください。</p>';
+      var ev=d.evalPick||null;
+      html+='<div class="evalpick">'+
+        ['S','A','B'].map(function(g){return '<button class="'+(ev===g?'on':'')+'" onclick="APP.setEval(\''+g+'\')">'+g+'評価</button>';}).join('')+
+      '</div>';
+      html+='<button class="btn gold" style="margin-top:12px" '+(ev?'':'disabled')+' onclick="APP.completeBoard(\''+b.id+'\')">取締役会を終える</button>';
+    }else{
+      html+='<div class="explain ok" style="margin-top:12px"><b>完了済み ✓</b></div>';
+    }
+  }
+  return html;
+}
+function submitBoard(id){
+  var b=BOARDS.filter(function(x){return x.id===id;})[0]; if(!b)return;
+  var answers=[];(b.tasks||[]).forEach(function(t,i){var el=document.getElementById('btask'+i);answers[i]=el?el.value:'';});
+  var empty=answers.some(function(a){return !a || a.trim()==='';});
+  if(empty){toast('すべての論点に記述してください');return;}
+  UI.data.answers=answers; UI.data.submitted=true;
+  render();window.scrollTo(0,document.body.scrollHeight);
+}
+function setEval(g){UI.data.evalPick=g;render();}
+function completeBoard(id){
+  var b=BOARDS.filter(function(x){return x.id===id;})[0]; if(!b)return;
+  if(S.boardsDone.indexOf(id)>=0)return;
+  touchStreak();
+  S.boardsDone.push(id);
+  S.tickets+=3;
+  gainXP(b.xp||300,'distribute');
+  save();
+  modal('<div class="modal"><div class="big shine">🎖️🏛️</div><h3>取締役会 完了！</h3>'+
+    '<p>自己評価：<b>'+esc(UI.data.evalPick||'-')+'</b><br>+'+(b.xp||300)+'XP ／ 🎫 チケット3枚</p>'+
+    '<div class="btns"><button class="btn gold" onclick="APP.closeModal();APP.go(null)">戻る</button></div></div>');
+}
+
+/* =========================================================
+   DEX + GACHA
+   ========================================================= */
+function viewDex(){
+  if(UI.sub==='card') return viewDexCard();
+  var owned=S.ownedCards.length, total=CARDS.length;
+  var html='<div class="dexbar"><div class="prog">🗂️ 図鑑 '+owned+' / '+total+'</div>'+
+    '<button class="btn gold sm" onclick="APP.openGacha()">🎫 ガチャ ('+S.tickets+')</button></div>';
+  html+='<div class="bar" style="margin-bottom:14px"><span style="width:'+(total?owned/total*100:0).toFixed(0)+'%"></span></div>';
+  html+='<div class="dexgrid">';
+  CARDS.forEach(function(c){
+    if(owns(c.id)){
+      var rc=rarClass(c.rarity);
+      html+='<button class="dcard '+rc+'" onclick="APP.go(\'card\',{id:\''+c.id+'\'})">'+
+        '<span class="rr">'+esc(c.rarity)+'</span><span class="catemo">'+catEmoji(c.category)+'</span>'+
+        '<div class="cco">'+esc(c.company||'')+'</div><div class="cti">'+esc(c.title)+'</div></button>';
+    }else{
+      html+='<div class="dcard locked"><span class="q">?</span></div>';
+    }
+  });
+  html+='</div>';
+  if(CARDS.length===0)html+='<p class="muted">カードデータ準備中</p>';
+  return html;
+}
+function viewDexCard(){
+  var c=CARDS.filter(function(x){return x.id===UI.data.id;})[0];
+  if(!c||!owns(c.id))return backBtn2('dex')+'<p class="muted">未所持カードです。</p>';
+  var html=backBtn2('dex');
+  html+='<div class="card">';
+  html+='<span class="tag">'+esc(c.company||'事例')+(c.year?' ・ '+esc(c.year):'')+'</span>';
+  html+='<h2 style="font-size:18px;color:var(--navy);margin:2px 0 4px">'+esc(c.title)+'</h2>';
+  html+='<div class="muted" style="font-size:12px;margin-bottom:8px">'+catEmoji(c.category)+' '+catName(c.category)+' ・ '+esc(c.rarity)+'</div>';
+  html+='<p style="font-size:14px">'+esc(c.summary)+'</p>';
+  if(c.insight)html+='<div class="explain" style="border-color:var(--gold);margin-top:10px"><b>💡 学びのポイント</b><br>'+esc(c.insight)+'</div>';
+  html+='</div>';
+  if(c.quiz){
+    html+='<div class="card"><h3>🔁 クイズ復習</h3><p style="font-weight:700">'+esc(c.quiz.q)+'</p>'+
+      '<div class="explain ok" style="margin-top:8px"><b>答え：'+String.fromCharCode(65+(c.quiz.answer||0))+'. '+esc((c.quiz.choices||[])[c.quiz.answer]||'')+'</b><br>'+esc(c.quiz.explanation||'')+'</div></div>';
+  }
+  return html;
+}
+function openGacha(){
+  if(S.tickets<=0){toast('チケットがありません。学習で集めよう！');return;}
+  var unowned=CARDS.filter(function(c){return !owns(c.id);});
+  S.tickets--;
+  if(unowned.length===0){
+    gainXP(100,'shacho');save();
+    modal('<div class="modal"><div class="big">💯</div><h3>コンプリート済み！</h3>'+
+      '<p>全カード所持のため、チケットを100XPに変換しました。</p>'+
+      '<div class="btns"><button class="btn gold" onclick="APP.closeModal()">OK</button></div></div>');
+    render();return;
+  }
+  /* weighted rarity among available */
+  var pool={};unowned.forEach(function(c){(pool[c.rarity]=pool[c.rarity]||[]).push(c);});
+  var avail=Object.keys(pool);
+  var totalW=avail.reduce(function(s,r){return s+(RARITY_W[r]||1);},0);
+  var roll=Math.random()*totalW, chosen=avail[0];
+  for(var i=0;i<avail.length;i++){var w=RARITY_W[avail[i]]||1;if(roll<w){chosen=avail[i];break;}roll-=w;}
+  var list=pool[chosen];
+  var card=list[Math.floor(Math.random()*list.length)];
+  S.ownedCards.push(card.id);
+  var big = (card.rarity==='SR'||card.rarity==='SSR');
+  if(big && !S.firstGachaSR)S.firstGachaSR=true;
+  save();
+  showGacha(card);
+}
+function showGacha(c){
+  var rc=rarClass(c.rarity);
+  var glow = (c.rarity==='SSR')?'🌈':(c.rarity==='SR')?'✨':(c.rarity==='R')?'💠':'⭐';
+  modal('<div class="modal"><h3 style="margin-bottom:2px">ガチャ！</h3>'+
+    '<p style="margin-bottom:2px">'+glow+' '+esc(c.rarity)+' カード '+glow+'</p>'+
+    '<div class="gacha-stage"><div class="flip"><div class="side back">❓</div>'+
+      '<div class="side front '+rc+'"><span class="fr">'+esc(c.rarity)+'</span>'+
+      '<div style="font-size:26px;margin-top:4px">'+catEmoji(c.category)+'</div>'+
+      '<div class="ft">'+esc(c.title)+'</div><div class="fc">'+esc(c.company||'')+'</div></div>'+
+    '</div></div>'+
+    '<div class="btns"><button class="btn ghost" onclick="APP.closeModal()">閉じる</button>'+
+    '<button class="btn gold" onclick="APP.closeModal();'+(S.tickets>0?'APP.openGacha()':'')+'">'+(S.tickets>0?'もう1回 ('+S.tickets+')':'OK')+'</button></div></div>');
+  render();
+}
+
+/* =========================================================
+   SETTINGS
+   ========================================================= */
+function viewSettings(){
+  var html='<h2 style="font-size:20px;color:var(--navy);margin-bottom:14px">⚙️ 設定</h2>';
+  html+='<div class="card"><h3>🏢 会社名</h3>'+
+    '<input class="name-input" id="setname" maxlength="20" value="'+esc(S.companyName)+'">'+
+    '<button class="btn sm gold" style="margin-top:10px" onclick="APP.updateName()">変更を保存</button></div>';
+
+  html+='<div class="card"><h3>💾 データエクスポート</h3>'+
+    '<p class="help">下のテキストをコピーして保管してください。別端末で復元できます。</p>'+
+    '<textarea class="field" style="min-height:90px;font-size:11px" readonly onclick="this.select()">'+esc(JSON.stringify(S))+'</textarea>'+
+    '<button class="btn sm ghost" style="margin-top:8px" onclick="APP.copyExport()">クリップボードにコピー</button></div>';
+
+  html+='<div class="card"><h3>📥 データインポート</h3>'+
+    '<p class="help">エクスポートしたJSON文字列を貼り付けて復元します（現在のデータは上書きされます）。</p>'+
+    '<textarea class="field" id="impbox" style="min-height:90px;font-size:11px" placeholder="ここにJSONを貼り付け"></textarea>'+
+    '<button class="btn sm" style="margin-top:8px" onclick="APP.doImport()">インポート実行</button></div>';
+
+  html+='<div class="card"><h3>⚠️ データリセット</h3>'+
+    '<p class="help">すべての進捗（XP・カード・実績）を削除します。この操作は取り消せません。</p>'+
+    '<button class="btn sm danger" onclick="APP.resetConfirm()">リセットする</button></div>';
+
+  html+='<p class="muted" style="text-align:center;font-size:11px;margin:16px 0 8px">経営者への道 ・ v1.0<br>データ: カード'+CARDS.length+' / ドリル'+DRILLS.length+' / ボス'+BOSSES.length+' / クエスト'+QUESTS.length+' / 取締役会'+BOARDS.length+'</p>';
+  return html;
+}
+function updateName(){
+  var el=document.getElementById('setname');var v=(el?el.value:'').trim();
+  if(!v){toast('社名を入力してください');return;}
+  S.companyName=v;S.setupDone=true;save();toast('社名を変更しました','gold');render();
+}
+function copyExport(){
+  var txt=JSON.stringify(S);
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(txt).then(function(){toast('コピーしました','gold');},function(){toast('コピーに失敗');});
+  }else{toast('テキストを長押しで選択してください');}
+}
+function doImport(){
+  var el=document.getElementById('impbox');var v=(el?el.value:'').trim();
+  if(!v){toast('JSONを貼り付けてください');return;}
+  try{
+    var p=JSON.parse(v);
+    if(typeof p!=='object'||p==null)throw 0;
+    S=Object.assign(defaultState(),p);
+    S.deptXP=Object.assign({keiri:0,kikaku:0,marketing:0,jinji:0,shacho:0},p.deptXP||{});
+    S.dailyDrill=Object.assign({date:'',count:0,bonus:false},p.dailyDrill||{});
+    save();toast('インポート完了','gold');nav('home');
+  }catch(e){toast('JSONの形式が正しくありません');}
+}
+function resetConfirm(){
+  modal('<div class="modal"><div class="big">⚠️</div><h3>本当にリセットしますか？</h3>'+
+    '<p>すべての進捗が削除されます。</p>'+
+    '<div class="btns"><button class="btn ghost" onclick="APP.closeModal()">やめる</button>'+
+    '<button class="btn danger" onclick="APP.resetConfirm2()">次へ</button></div></div>');
+}
+function resetConfirm2(){
+  modal('<div class="modal"><div class="big">🛑</div><h3>最終確認</h3>'+
+    '<p>この操作は取り消せません。<br>本当に削除してよろしいですか？</p>'+
+    '<div class="btns"><button class="btn ghost" onclick="APP.closeModal()">キャンセル</button>'+
+    '<button class="btn danger" onclick="APP.doReset()">削除する</button></div></div>');
+}
+function doReset(){
+  try{localStorage.removeItem(SAVE_KEY);}catch(e){}
+  S=defaultState();save();closeModal();toast('リセットしました');nav('home');
+}
+
+/* =========================================================
+   COMMON UI
+   ========================================================= */
+function backBtn(scr){return '<button class="back" onclick="APP.go(null)">‹ 戻る</button>';}
+function backBtn2(scr){return '<button class="back" onclick="APP.go(null)">‹ 図鑑に戻る</button>';}
+
+/* =========================================================
+   PUBLIC API
+   ========================================================= */
+window.APP={
+  nav:nav, go:go, closeModal:closeModal,
+  saveName:saveName,
+  answerCard:answerCard, claimCard:claimCard,
+  startDrill:startDrill, answerDrill:answerDrill, nextDrill:nextDrill,
+  judgeBoss:judgeBoss,
+  toggleCheck:toggleCheck, completeQuest:completeQuest,
+  submitBoard:submitBoard, setEval:setEval, completeBoard:completeBoard,
+  openGacha:openGacha,
+  updateName:updateName, copyExport:copyExport, doImport:doImport,
+  resetConfirm:resetConfirm, resetConfirm2:resetConfirm2, doReset:doReset
+};
+/* alias go(null) helper */
+var _go=go;
+window.APP.go=function(sub,data){ if(sub===null){UI.sub=null;UI.data={};render();window.scrollTo(0,0);} else _go(sub,data); };
+
+/* =========================================================
+   BOOT
+   ========================================================= */
+load();
+render();
+if('serviceWorker' in navigator){
+  window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});
+}
+})();
+</script>
+</body>
+</html>
